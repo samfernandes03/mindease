@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MindEase — Mood Map</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+
+    .mood-btn {
+        transition: transform 0.18s ease, opacity 0.18s ease;
+        opacity: 0.75;
+    }
+
+    .mood-btn.selected {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+
+    .mood-btn svg {
+        transition: transform 0.18s ease;
+    }
+
+    .mood-btn.selected svg {
+        transform: scale(1.05);
+    }
+
+
+    .mood-entry {
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .mood-entry:hover {
+        transform: translateX(4px);
+    }
+
+    .mood-edit-btn, .mood-delete-btn {
+        opacity: 0.7;
+        transition: opacity 0.15s ease;
+    }
+
+    .mood-edit-btn:hover, .mood-delete-btn:hover {
+        opacity: 1;
+    }
+
+    #editMoodModal.show #editMoodCard {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    #editMoodCard {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+
+
+  </style>
+</head>
+
+<body class="min-h-screen bg-gray-50 flex overflow-y-auto">
+
+   <aside class="w-24 bg-white border-r border-gray-200 flex flex-col items-center py-8 gap-7 fixed h-full">
+
+    <!-- HOME -->
+    <a href="./dashboard.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M3 9.5l9-7 9 7v10.5a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1V9.5z"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- TASKS (NEW ICON: CHECK-SQUARE) -->
+    <a href="./tasks.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- HEART -->
+    <a href="./mood.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- WELLNESS / ZEN ICON -->
+    <a href="#" class="group">
+    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+            fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path d="M12 22s8-4 8-10-8-10-8-10-8 4-8 10 8 10 8 10z"/>
+        </svg>
+    </div>
+    </a>
+
+    <!-- FOCUS ICON -->
+    <a href="#" class="group">
+    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+            fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <circle cx="12" cy="12" r="8"/>
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+        </svg>
+    </div>
+    </a>
+
+    <!-- LOGOUT -->
+    <button onclick="logout()" class="group mt-auto mb-4">
+      <div class="w-14 h-14 rounded-2xl bg-purple-300 flex items-center justify-center shadow-sm hover:bg-purple-400 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-purple-800 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <path d="M16 17l5-5-5-5"/>
+          <path d="M21 12H9"/>
+        </svg>
+      </div>
+    </button>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 ml-24 p-10">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center mb-10">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Mood Map</h1>
+        <p class="text-gray-500 text-sm">Track your emotional evolution</p>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+      <!-- MOOD CHART -->
+      <div class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Emotional Evolution</h2>
+        <canvas id="moodChart" height="120"></canvas>
+      </div>
+
+      <!-- STATS -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-6">
+        <h2 class="text-xl font-semibold text-gray-800">Statistics</h2>
+
+        <div class="p-4 bg-indigo-50 rounded-xl">
+          <p class="text-gray-500 text-sm">Average Mood</p>
+          <p class="text-2xl font-bold text-indigo-700">7.1 / 10</p>
+        </div>
+
+        <div class="p-4 bg-purple-50 rounded-xl">
+          <p class="text-gray-500 text-sm">Best Day</p>
+          <p class="text-2xl font-bold text-purple-700">Saturday</p>
+        </div>
+
+        <div class="p-4 bg-green-50 rounded-xl">
+          <p class="text-gray-500 text-sm">Correlation</p>
+          <p class="text-2xl font-bold text-green-700">+0.85</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- HOW DO YOU FEEL NOW -->
+    <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+    <h2 class="text-xl font-semibold text-gray-800 mb-6">How do you feel now?</h2>
+
+    <div id="moodButtons" class="grid grid-cols-5 gap-6 text-center mb-6">
+
+        <!-- DISTRESSED -->
+        <button data-mood="Distressed" data-score="1"
+        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 17c-2 0-3.5-1.5-3.5-3.5"/>
+            <path d="M12 17c2 0 3.5-1.5 3.5-3.5"/>
+            <path d="M9 10h.01M15 10h.01"/>
+        </svg>
+        <p class="text-sm font-medium text-gray-700">Distressed</p>
+        </button>
+
+        <!-- SAD -->
+        <button data-mood="Sad" data-score="2"
+        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9 10h.01M15 10h.01"/>
+            <path d="M8 16c1.5-1 6.5-1 8 0"/>
+        </svg>
+        <p class="text-sm font-medium text-gray-700">Sad</p>
+        </button>
+
+        <!-- NEUTRAL -->
+        <button data-mood="Neutral" data-score="3"
+        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9 10h.01M15 10h.01"/>
+            <line x1="8" y1="15" x2="16" y2="15"/>
+        </svg>
+        <p class="text-sm font-medium text-gray-700">Neutral</p>
+        </button>
+
+        <!-- HAPPY -->
+        <button data-mood="Happy" data-score="4"
+        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9 10h.01M15 10h.01"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+        </svg>
+        <p class="text-sm font-medium text-gray-700">Happy</p>
+        </button>
+
+        <!-- GREAT -->
+        <button data-mood="Great" data-score="5"
+        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <p class="text-sm font-medium text-gray-700">Great</p>
+        </button>
+
+    </div>
+
+    <textarea id="moodMessage" placeholder="Write a message about your day..."
+        class="w-full p-3 border rounded-xl mb-4 focus:ring-indigo-400 focus:border-indigo-400"></textarea>
+
+    <button onclick="saveMood()"
+        class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-sm transition">
+        Save Mood
+    </button>
+    </div>
+
+    <!-- MOOD HISTORY -->
+    <div class="mt-6 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Mood History</h2>
+
+    <div id="moodHistory" class="space-y-4"></div>
+    </div>
+
+    <!-- EDIT MOOD MODAL -->
+    <div id="editMoodModal"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-center justify-center">
+
+    <div id="editMoodCard"
+        class="bg-white w-full max-w-md rounded-2xl p-6 shadow-xl transform scale-95 opacity-0 transition-all duration-200">
+
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Edit Mood Entry</h2>
+
+        <!-- Mood Selector -->
+        <label class="text-sm font-medium text-gray-700">Mood</label>
+        <select id="editMoodSelect"
+        class="w-full mt-1 mb-4 p-2 border rounded-xl focus:ring-indigo-400 focus:border-indigo-400">
+        <option value="Distressed">Distressed</option>
+        <option value="Sad">Sad</option>
+        <option value="Neutral">Neutral</option>
+        <option value="Happy">Happy</option>
+        <option value="Great">Great</option>
+        </select>
+
+        <!-- Message -->
+        <label class="text-sm font-medium text-gray-700">Message</label>
+        <textarea id="editMoodMessage"
+        class="w-full mt-1 p-3 border rounded-xl focus:ring-indigo-400 focus:border-indigo-400"
+        rows="3"></textarea>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-3 mt-6">
+        <button onclick="closeEditModal()"
+            class="px-4 py-2 rounded-xl border text-gray-700 hover:bg-gray-100 transition">
+            Cancel
+        </button>
+
+        <button onclick="saveEditedMood()"
+            class="px-4 py-2 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 transition">
+            Save
+        </button>
+        </div>
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+  </main>
+
+  <!-- CHART SCRIPT -->
+  <script>
+    const ctx = document.getElementById('moodChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Mood',
+          data: [6, 7, 5, 8, 7, 9, 7],
+          borderColor: '#6366F1',
+          backgroundColor: 'rgba(99, 102, 241, 0.2)',
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: '#6366F1'
+        }]
+      },
+      options: {
+        scales: {
+          y: { min: 1, max: 10 }
+        }
+      }
+    });
+
+    // Auto-activate sidebar icon based on current page
+    const currentPage = window.location.pathname.split("/").pop();
+
+    document.querySelectorAll("aside a").forEach(link => {
+        const href = link.getAttribute("href");
+
+        if (href && href.includes(currentPage)) {
+        const iconWrapper = link.querySelector("div");
+        if (iconWrapper) {
+            iconWrapper.classList.add("sidebar-active");
+        }
+        }
+    });
+
+  /* -------------------------
+     LOCAL STORAGE DATA
+  ------------------------- */
+  let moodLogs = JSON.parse(localStorage.getItem("moodLogs") || "[]");
+  let editingIndex = null;
+
+    // Mood selection logic (THIS WAS MISSING)
+  document.querySelectorAll(".mood-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      // Remove previous selection
+      document.querySelectorAll(".mood-btn").forEach(b => {
+        b.classList.remove("selected");
+      });
+
+      // Add selection to clicked mood
+      btn.classList.add("selected");
+    });
+  });
+
+  /* -------------------------
+     SAVE NEW MOOD
+  ------------------------- */
+  function saveMood() {
+    const selected = document.querySelector(".mood-btn.selected");
+    if (!selected) {
+      alert("Please select a mood");
+      return;
+    }
+
+    const entry = {
+      mood: selected.dataset.mood,
+      score: Number(selected.dataset.score),
+      message: document.getElementById("moodMessage").value,
+      date: new Date().toLocaleString()
+    };
+
+    moodLogs.push(entry);
+    localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
+
+    document.getElementById("moodMessage").value = "";
+    selected.classList.remove("selected");
+
+    renderMoodHistory();
+  }
+
+  /* -------------------------
+     RENDER HISTORY
+  ------------------------- */
+  function renderMoodHistory() {
+    const container = document.getElementById("moodHistory");
+
+    if (!moodLogs.length) {
+      container.innerHTML = `<p class="text-gray-500 text-sm">No moods registered yet.</p>`;
+      return;
+    }
+
+    container.innerHTML = moodLogs.map((entry, index) => `
+      <div class="mood-entry p-4 border rounded-xl bg-gray-50 flex justify-between items-start">
+        
+        <div>
+          <p class="font-semibold text-gray-800">${entry.mood}
+            <span class="text-xs text-gray-500 ml-2">${entry.date}</span>
+          </p>
+          <p class="text-gray-600 mt-1">${entry.message || "<i>No message</i>"}</p>
+        </div>
+
+        <div class="flex gap-3">
+          <button onclick="editMood(${index})" class="text-indigo-600 font-medium text-sm">Edit</button>
+          <button onclick="deleteMood(${index})" class="text-red-600 font-medium text-sm">Delete</button>
+        </div>
+
+      </div>
+    `).join("");
+  }
+
+  /* -------------------------
+     DELETE ENTRY
+  ------------------------- */
+  function deleteMood(index) {
+    moodLogs.splice(index, 1);
+    localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
+    renderMoodHistory();
+  }
+
+  /* -------------------------
+     OPEN EDIT MODAL
+  ------------------------- */
+  function editMood(index) {
+    editingIndex = index;
+    const entry = moodLogs[index];
+
+    document.getElementById("editMoodSelect").value = entry.mood;
+    document.getElementById("editMoodMessage").value = entry.message;
+
+    const modal = document.getElementById("editMoodModal");
+    modal.classList.remove("hidden");
+
+    setTimeout(() => modal.classList.add("show"), 10);
+  }
+
+  /* -------------------------
+     CLOSE EDIT MODAL
+  ------------------------- */
+  function closeEditModal() {
+    const modal = document.getElementById("editMoodModal");
+    modal.classList.remove("show");
+
+    setTimeout(() => modal.classList.add("hidden"), 150);
+  }
+
+  /* -------------------------
+     SAVE EDITED ENTRY
+  ------------------------- */
+  function saveEditedMood() {
+    const newMood = document.getElementById("editMoodSelect").value;
+    const newMessage = document.getElementById("editMoodMessage").value;
+
+    moodLogs[editingIndex].mood = newMood;
+    moodLogs[editingIndex].message = newMessage;
+
+    localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
+
+    closeEditModal();
+    renderMoodHistory();
+  }
+
+  /* -------------------------
+     CLOSE MODAL ON BACKDROP CLICK
+  ------------------------- */
+  document.getElementById("editMoodModal").addEventListener("click", (e) => {
+    if (e.target.id === "editMoodModal") closeEditModal();
+  });
+
+  /* -------------------------
+     INITIAL RENDER
+  ------------------------- */
+  renderMoodHistory();
+
+
+</script>
+
+</body>
+</html>

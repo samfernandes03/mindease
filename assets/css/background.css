@@ -1,0 +1,28 @@
+.sphere {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(25px);
+  opacity: 0.22;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.sphere-1 {
+  width: 180px;
+  height: 180px;
+  top: -50px;
+  left: -50px;
+  background: radial-gradient(circle, #7b5bff, #5a3fe0);
+}
+
+.sphere-2 {
+  width: 180px;
+  height: 180px;
+  bottom: -50px;
+  right: -50px;
+  background: radial-gradient(circle, #4fa3ff, #2d7be8);
+}
+
+body {
+  overflow: hidden;
+}

@@ -1,0 +1,8 @@
+.sidebar-active {
+  background-color: #e0e7ff; /* indigo-100 */
+}
+
+.sidebar-active svg {
+  color: #3730a3 !important; /* indigo-800 */
+  opacity: 1 !important;
+}

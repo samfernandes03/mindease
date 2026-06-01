@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MindEase — Dashboard</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>~
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gray-50 flex overflow-y-auto">
+
+  <aside class="w-24 bg-white border-r border-gray-200 flex flex-col items-center py-8 gap-7 fixed h-full">
+
+    <!-- HOME -->
+    <a href="./dashboard.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 sidebar-active flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M3 9.5l9-7 9 7v10.5a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1V9.5z"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- TASKS -->
+    <a href="./tasks.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- HEART -->
+    <a href="./mood.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- WELLNESS / ZEN ICON -->
+    <a href="#" class="group">
+    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+            fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path d="M12 22s8-4 8-10-8-10-8-10-8 4-8 10 8 10 8 10z"/>
+        </svg>
+    </div>
+    </a>
+
+
+  <!-- FOCUS ICON -->
+  <a href="#" class="group">
+    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" 
+          class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+          fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <circle cx="12" cy="12" r="8"/>
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+      </svg>
+    </div>
+  </a>
+
+    <!-- LOGOUT -->
+    <button onclick="logout()" class="group mt-auto mb-4">
+      <div class="w-14 h-14 rounded-2xl bg-purple-300 flex items-center justify-center shadow-sm hover:bg-purple-400 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-purple-800 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <path d="M16 17l5-5-5-5"/>
+          <path d="M21 12H9"/>
+        </svg>
+      </div>
+    </button>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 ml-24 p-10">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center mb-10">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Welcome back, Ana</h1>
+        <p class="text-gray-500 text-sm">Thursday, May 7, 2026</p>
+      </div>
+
+      <img src="../assets/img/mindfulness.png" class="w-12 h-12 rounded-full shadow" alt="Profile">
+    </div>
+
+    <!-- GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+      <!-- MOOD CHART -->
+      <div class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Mood this week</h2>
+        <canvas id="moodChart" height="120"></canvas>
+      </div>
+
+      <!-- WELL-BEING SUGGESTIONS -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Well-being Suggestions</h2>
+
+        <div class="space-y-4">
+          <div class="p-4 bg-indigo-50 rounded-xl">
+            <p class="font-medium text-indigo-700">5-minute breathing</p>
+            <p class="text-sm text-indigo-500">Relax and reset your mind</p>
+          </div>
+
+          <div class="p-4 bg-purple-50 rounded-xl">
+            <p class="font-medium text-purple-700">Gentle stretching</p>
+            <p class="text-sm text-purple-500">10 minutes of light movement</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TASKS -->
+    <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Today's Tasks</h2>
+
+      <div class="space-y-4">
+
+        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-xl">
+          <p class="font-medium text-gray-700">Study Mathematics — Chapter 3</p>
+          <span class="text-indigo-600 font-semibold text-sm">Pending</span>
+        </div>
+
+        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-xl">
+          <p class="font-medium text-gray-700">Prepare presentation</p>
+          <span class="text-indigo-600 font-semibold text-sm">Pending</span>
+        </div>
+
+        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-xl">
+          <p class="font-medium text-gray-700">Read Philosophy article</p>
+          <span class="text-indigo-600 font-semibold text-sm">Pending</span>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- CHART SCRIPT -->
+  <script>
+    const ctx = document.getElementById('moodChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Mood',
+          data: [3, 4, 2, 5, 4, 3, 4],
+          borderColor: '#6366F1',
+          backgroundColor: 'rgba(99, 102, 241, 0.2)',
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: '#6366F1'
+        }]
+      },
+      options: {
+        scales: {
+          y: { min: 1, max: 5 }
+        }
+      }
+    });
+  </script>
+
+  <!-- LOGOUT SCRIPT -->
+  <script type="module">
+    import { logoutUser } from "../auth/auth.js";
+
+    function logout() {
+      logoutUser();
+      window.location.href = "../index.html";
+    }
+
+    window.logout = logout;
+  </script>
+
+</body>
+</html>
