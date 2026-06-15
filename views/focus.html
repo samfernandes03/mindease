@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MindEase — Focus Mode</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gray-50 flex overflow-y-auto">
+
+  <aside class="w-24 bg-white border-r border-gray-200 flex flex-col items-center py-8 gap-7 fixed h-full">
+
+    <!-- HOME -->
+    <a href="./dashboard.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 sidebar-active flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M3 9.5l9-7 9 7v10.5a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1V9.5z"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- TASKS -->
+    <a href="./tasks.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- HEART -->
+    <a href="./mood.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- WELLNESS / ZEN ICON -->
+    <a href="./wellbeing.html" class="group">
+    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+            fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path d="M12 22s8-4 8-10-8-10-8-10-8 4-8 10 8 10 8 10z"/>
+        </svg>
+    </div>
+    </a>
+
+
+  <!-- FOCUS ICON -->
+  <a href="./focus.html" class="group">
+    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" 
+          class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+          fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <circle cx="12" cy="12" r="8"/>
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+      </svg>
+    </div>
+  </a>
+
+    <!-- LOGOUT -->
+    <button onclick="logout()" class="group mt-auto mb-4">
+      <div class="w-14 h-14 rounded-2xl bg-purple-300 flex items-center justify-center shadow-sm hover:bg-purple-400 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-purple-800 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <path d="M16 17l5-5-5-5"/>
+          <path d="M21 12H9"/>
+        </svg>
+      </div>
+    </button>
+
+  </aside>
+
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 ml-24 p-10">
+
+    <div class="mb-10">
+      <h1 class="text-3xl font-bold text-gray-900">Modo Foco</h1>
+      <p class="text-gray-500 text-sm">Técnica Pomodoro adaptativa</p>
+    </div>
+
+    <!-- MODOS -->
+    <div class="flex gap-6 mb-10">
+      <button id="modeLight" class="flex-1 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition text-left">
+        <h2 class="text-lg font-semibold text-gray-900">Foco Leve</h2>
+        <p class="text-gray-500 text-sm">25 min foco • 5 min pausa</p>
+      </button>
+
+      <button id="modeDeep" class="flex-1 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition text-left">
+        <h2 class="text-lg font-semibold text-gray-900">Foco Profundo</h2>
+        <p class="text-gray-500 text-sm">50 min foco • 10 min pausa</p>
+      </button>
+    </div>
+
+    <!-- TIMER -->
+    <div class="bg-white border border-gray-200 rounded-3xl p-10 shadow-md max-w-xl mx-auto text-center">
+
+      <h3 id="focusState" class="text-xl font-semibold text-indigo-600 mb-6">
+        Foco — Concentra-te
+      </h3>
+
+      <div id="timerDisplay" class="text-7xl font-bold text-gray-900 mb-10 tracking-tight">
+        25:00
+      </div>
+
+      <div class="flex justify-center gap-8">
+
+        <!-- PLAY / PAUSE -->
+        <button id="playBtn"
+          class="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center hover:bg-indigo-600 transition shadow-md active:scale-95">
+
+          <svg id="playIcon" xmlns="http://www.w3.org/2000/svg"
+            class="w-9 h-9 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.25 6.347c.75.423.75 1.55 0 1.973l-11.25 6.347A1.125 1.125 0 0 1 5.25 18.347V5.653Z" />
+          </svg>
+
+          <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg"
+            class="w-9 h-9 text-white hidden" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6.75 5.25A1.5 1.5 0 0 1 8.25 3.75h1.5A1.5 1.5 0 0 1 11.25 5.25v13.5a1.5 1.5 0 0 1-1.5 1.5H8.25a1.5 1.5 0 0 1-1.5-1.5V5.25Zm6 0A1.5 1.5 0 0 1 14.25 3.75h1.5a1.5 1.5 0 0 1 1.5 1.5v13.5a1.5 1.5 0 0 1-1.5 1.5h-1.5a1.5 1.5 0 0 1-1.5-1.5V5.25Z" />
+          </svg>
+
+        </button>
+
+        <!-- RESET -->
+        <button id="resetBtn"
+          class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition shadow-md active:scale-95">
+
+          <svg xmlns="http://www.w3.org/2000/svg"
+            class="w-9 h-9 text-gray-700"
+            viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 4.5a7.5 7.5 0 1 0 7.06 10.06.75.75 0 1 1 1.415.53A9 9 0 1 1 12 3v1.5Zm8.03-.28a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 0 1-1.28-.53V6A7.5 7.5 0 0 0 4.94 16.06a.75.75 0 1 1-1.415.53A9 9 0 0 1 15.75 5.25V3.75a.75.75 0 0 1 1.28-.53l3 3Z"/>
+          </svg>
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- ESTATÍSTICAS -->
+    <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm max-w-xl mx-auto">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Estatísticas de Hoje</h2>
+
+      <div class="space-y-2 text-gray-700">
+        <p><strong>Minutos focados:</strong> <span id="statsMinutes">0</span> min</p>
+        <p><strong>Sessões concluídas:</strong> <span id="statsSessions">0</span></p>
+        <p><strong>Modo mais usado:</strong> <span id="statsMode">—</span></p>
+      </div>
+    </div>
+
+    <!-- HISTÓRICO -->
+    <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm max-w-xl mx-auto">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Histórico de Sessões</h2>
+
+      <div id="historyList" class="space-y-3 text-gray-700 text-sm">
+        <p class="text-gray-400">Nenhuma sessão registada ainda.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SCRIPT -->
+  <script>
+    let mode = "light";
+    let focusTime = 25 * 60;
+    let breakTime = 5 * 60;
+    let timeLeft = focusTime;
+    let interval = null;
+    let isRunning = false;
+
+    const timerDisplay = document.getElementById("timerDisplay");
+    const focusState = document.getElementById("focusState");
+
+    function updateDisplay() {
+      const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+      const s = (timeLeft % 60).toString().padStart(2, "0");
+      timerDisplay.textContent = `${m}:${s}`;
+    }
+
+    // -----------------------------
+    // ESTATÍSTICAS + HISTÓRICO
+    // -----------------------------
+
+    function loadStats() {
+      const stats = JSON.parse(localStorage.getItem("focusStats")) || {
+        minutes: 0,
+        sessions: 0,
+        modeCount: { light: 0, deep: 0 }
+      };
+
+      document.getElementById("statsMinutes").textContent = stats.minutes;
+      document.getElementById("statsSessions").textContent = stats.sessions;
+
+      const mostUsed =
+        stats.modeCount.light > stats.modeCount.deep ? "Foco Leve" :
+        stats.modeCount.deep > stats.modeCount.light ? "Foco Profundo" :
+        "—";
+
+      document.getElementById("statsMode").textContent = mostUsed;
+    }
+
+    function saveSession(duration, mode) {
+      const stats = JSON.parse(localStorage.getItem("focusStats")) || {
+        minutes: 0,
+        sessions: 0,
+        modeCount: { light: 0, deep: 0 }
+      };
+
+      stats.minutes += duration;
+      stats.sessions += 1;
+      stats.modeCount[mode]++;
+
+      localStorage.setItem("focusStats", JSON.stringify(stats));
+
+      const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
+      const now = new Date();
+
+      history.unshift({
+        time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        duration,
+        mode,
+        date: now.toLocaleDateString()
+      });
+
+      localStorage.setItem("focusHistory", JSON.stringify(history));
+
+      loadStats();
+      loadHistory();
+    }
+
+// -----------------------------
+// ESTATÍSTICAS + HISTÓRICO (GUARDADOS NO LOCALSTORAGE)
+// -----------------------------
+
+function loadStats() {
+  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
+    minutes: 0,
+    sessions: 0,
+    modeCount: { light: 0, deep: 0 }
+  };
+
+  document.getElementById("statsMinutes").textContent = stats.minutes;
+  document.getElementById("statsSessions").textContent = stats.sessions;
+
+  const mostUsed =
+    stats.modeCount.light > stats.modeCount.deep ? "Foco Leve" :
+    stats.modeCount.deep > stats.modeCount.light ? "Foco Profundo" :
+    "—";
+
+  document.getElementById("statsMode").textContent = mostUsed;
+}
+
+function saveSession(duration, mode) {
+  // --- ESTATÍSTICAS ---
+  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
+    minutes: 0,
+    sessions: 0,
+    modeCount: { light: 0, deep: 0 }
+  };
+
+  stats.minutes += duration;
+  stats.sessions += 1;
+  stats.modeCount[mode]++;
+
+  localStorage.setItem("focusStats", JSON.stringify(stats));
+
+  // --- HISTÓRICO ---
+  const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
+  const now = new Date();
+
+  history.unshift({
+    time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    duration,
+    mode,
+    date: now.toLocaleDateString()
+  });
+
+  localStorage.setItem("focusHistory", JSON.stringify(history));
+
+  loadStats();
+  loadHistory();
+}
+
+    function loadHistory() {
+      const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
+      const container = document.getElementById("historyList");
+
+      if (history.length === 0) {
+        container.innerHTML = `<p class="text-gray-400">Nenhuma sessão registada ainda.</p>`;
+        return;
+      }
+
+  container.innerHTML = history
+    .map(item => `
+      <div class="p-3 border border-gray-200 rounded-xl">
+        <p><strong>${item.time}</strong> — ${item.duration} min — 
+        ${item.mode === "light" ? "Foco Leve" : "Foco Profundo"}</p>
+      </div>
+    `)
+    .join("");
+}
+
+    // -----------------------------
+    // TIMER
+    // -----------------------------
+
+    function togglePlayPause() {
+      const playIcon = document.getElementById("playIcon");
+      const pauseIcon = document.getElementById("pauseIcon");
+
+      if (isRunning) {
+        clearInterval(interval);
+        isRunning = false;
+        playIcon.classList.remove("hidden");
+        pauseIcon.classList.add("hidden");
+        return;
+      }
+
+      isRunning = true;
+      playIcon.classList.add("hidden");
+      pauseIcon.classList.remove("hidden");
+
+      interval = setInterval(() => {
+        timeLeft--;
+        updateDisplay();
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          isRunning = false;
+
+          const duration = focusState.textContent.includes("Foco")
+            ? focusTime / 60
+            : breakTime / 60;
+
+          saveSession(duration, mode);
+
+          if (focusState.textContent.includes("Foco")) {
+            focusState.textContent = "Pausa — Respira um pouco";
+            timeLeft = breakTime;
+          } else {
+            focusState.textContent = "Foco — Concentra-te";
+            timeLeft = focusTime;
+          }
+
+          togglePlayPause();
+        }
+      }, 1000);
+    }
+
+    document.getElementById("playBtn").onclick = togglePlayPause;
+
+    document.getElementById("resetBtn").onclick = () => {
+      clearInterval(interval);
+      isRunning = false;
+      timeLeft = focusTime;
+      focusState.textContent = "Foco — Concentra-te";
+
+      document.getElementById("playIcon").classList.remove("hidden");
+      document.getElementById("pauseIcon").classList.add("hidden");
+
+      updateDisplay();
+    };
+
+    document.getElementById("modeLight").onclick = () => {
+      mode = "light";
+      focusTime = 25 * 60;
+      breakTime = 5 * 60;
+      timeLeft = focusTime;
+      isRunning = false;
+
+      document.getElementById("playIcon").classList.remove("hidden");
+      document.getElementById("pauseIcon").classList.add("hidden");
+
+      focusState.textContent = "Foco — Concentra-te";
+      updateDisplay();
+    };
+
+    document.getElementById("modeDeep").onclick = () => {
+      mode = "deep";
+      focusTime = 50 * 60;
+      breakTime = 10 * 60;
+      timeLeft = focusTime;
+      isRunning = false;
+
+      document.getElementById("playIcon").classList.remove("hidden");
+      document.getElementById("pauseIcon").classList.add("hidden");
+
+      focusState.textContent = "Foco — Concentra-te";
+      updateDisplay();
+    };
+
+    loadStats();
+    loadHistory();
+    updateDisplay();
+
+    // -----------------------------
+// ESTATÍSTICAS + HISTÓRICO (GUARDADOS NO LOCALSTORAGE)
+// -----------------------------
+
+function loadStats() {
+  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
+    minutes: 0,
+    sessions: 0,
+    modeCount: { light: 0, deep: 0 }
+  };
+
+  document.getElementById("statsMinutes").textContent = stats.minutes;
+  document.getElementById("statsSessions").textContent = stats.sessions;
+
+  const mostUsed =
+    stats.modeCount.light > stats.modeCount.deep ? "Foco Leve" :
+    stats.modeCount.deep > stats.modeCount.light ? "Foco Profundo" :
+    "—";
+
+  document.getElementById("statsMode").textContent = mostUsed;
+}
+
+function saveSession(duration, mode) {
+  // --- ESTATÍSTICAS ---
+  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
+    minutes: 0,
+    sessions: 0,
+    modeCount: { light: 0, deep: 0 }
+  };
+
+  stats.minutes += duration;
+  stats.sessions += 1;
+  stats.modeCount[mode]++;
+
+  localStorage.setItem("focusStats", JSON.stringify(stats));
+
+  // --- HISTÓRICO ---
+  const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
+  const now = new Date();
+
+  history.unshift({
+    time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    duration,
+    mode,
+    date: now.toLocaleDateString()
+  });
+
+  localStorage.setItem("focusHistory", JSON.stringify(history));
+
+  loadStats();
+  loadHistory();
+}
+
+
+  </script>
+
+</body>
+</html>

@@ -58,7 +58,7 @@
 
 
   <!-- FOCUS ICON -->
-  <a href="#" class="group">
+  <a href="./focus.html" class="group">
     <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
       <svg xmlns="http://www.w3.org/2000/svg" 
           class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
@@ -92,7 +92,22 @@
         <p class="text-gray-500 text-sm">Thursday, May 7, 2026</p>
       </div>
 
-      <img src="../assets/img/mindfulness.png" class="w-12 h-12 rounded-full shadow" alt="Profile">
+        <a href="./profile.html" class="relative">
+          
+          <!-- Foto dinâmica -->
+          <img id="navProfilePhoto"
+              class="w-12 h-12 rounded-full shadow cursor-pointer hover:opacity-80 transition hidden"
+              alt="Profile">
+
+          <!-- Fallback com inicial -->
+          <div id="navProfileFallback"
+              class="w-12 h-12 rounded-full bg-indigo-200 flex items-center justify-center 
+                      text-lg font-bold text-indigo-700 shadow cursor-pointer hover:opacity-80 transition">
+            U
+          </div>
+
+        </a>
+
     </div>
 
     <!-- GRID -->
@@ -175,6 +190,31 @@
         }
       }
     });
+
+      function loadProfile() {
+    const saved = JSON.parse(localStorage.getItem("profileData")) || {
+      name: "User",
+      email: "user@email.com",
+      photo: null
+    };
+
+    const navPhoto = document.getElementById("navProfilePhoto");
+    const navFallback = document.getElementById("navProfileFallback");
+
+    if (!navPhoto || !navFallback) return;
+
+    if (saved.photo) {
+      navPhoto.src = saved.photo;
+      navPhoto.classList.remove("hidden");
+      navFallback.classList.add("hidden");
+    } else {
+      navFallback.textContent = saved.name.charAt(0).toUpperCase();
+      navFallback.classList.remove("hidden");
+      navPhoto.classList.add("hidden");
+    }
+  }
+
+  loadProfile();
   </script>
 
   <!-- LOGOUT SCRIPT -->

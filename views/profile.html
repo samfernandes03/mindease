@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MindEase — Perfil</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gray-50 flex overflow-y-auto">
+
+  <aside class="w-24 bg-white border-r border-gray-200 flex flex-col items-center py-8 gap-7 fixed h-full">
+
+    <!-- HOME -->
+    <a href="./dashboard.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 sidebar-active flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M3 9.5l9-7 9 7v10.5a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1V9.5z"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- TASKS -->
+    <a href="./tasks.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- HEART -->
+    <a href="./mood.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- WELLNESS / ZEN ICON -->
+    <a href="./wellbeing.html" class="group">
+    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+            fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path d="M12 22s8-4 8-10-8-10-8-10-8 4-8 10 8 10 8 10z"/>
+        </svg>
+    </div>
+    </a>
+
+
+  <!-- FOCUS ICON -->
+  <a href="./focus.html" class="group">
+    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" 
+          class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+          fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <circle cx="12" cy="12" r="8"/>
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+      </svg>
+    </div>
+  </a>
+
+    <!-- LOGOUT -->
+    <button onclick="logout()" class="group mt-auto mb-4">
+      <div class="w-14 h-14 rounded-2xl bg-purple-300 flex items-center justify-center shadow-sm hover:bg-purple-400 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-purple-800 opacity-80 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <path d="M16 17l5-5-5-5"/>
+          <path d="M21 12H9"/>
+        </svg>
+      </div>
+    </button>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 ml-24 p-10">
+
+    <!-- HEADER -->
+    <div class="mb-10">
+      <h1 class="text-3xl font-bold text-gray-900">Perfil</h1>
+      <p class="text-gray-500 text-sm">Acompanha o teu progresso e objetivos</p>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+        <!-- PROFILE CARD -->
+        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col items-center text-center">
+
+        <!-- Avatar -->
+        <label for="photoInput" class="cursor-pointer flex flex-col items-center">
+            <img id="profilePhoto" 
+                src="" 
+                class="w-24 h-24 rounded-full object-cover shadow mb-3 hidden">
+
+            <div id="profileAvatar"
+                class="w-24 h-24 rounded-full bg-indigo-200 flex items-center justify-center text-4xl font-bold text-indigo-700 mb-3">
+            U
+            </div>
+
+            <p class="text-xs text-indigo-600 underline cursor-pointer">Alterar foto</p>
+        </label>
+
+        <input id="photoInput" type="file" accept="image/*" class="hidden">
+
+        <h2 id="profileName" class="text-xl font-semibold text-gray-800 mt-2">User</h2>
+        <p id="profileEmail" class="text-gray-500 text-sm mb-4">user@email.com</p>
+
+        <button id="openEdit" class="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition shadow">
+            Editar Perfil
+        </button>
+        </div>
+
+
+      <!-- GENERAL STATS -->
+      <div class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6">Estatísticas Gerais</h2>
+
+        <div class="grid grid-cols-2 gap-6">
+
+          <div class="p-6 bg-indigo-50 rounded-2xl text-center shadow-sm">
+            <p class="text-3xl font-bold text-indigo-700">7.1</p>
+            <p class="text-sm text-indigo-500 mt-1">Humor Médio</p>
+          </div>
+
+          <div class="p-6 bg-purple-50 rounded-2xl text-center shadow-sm">
+            <p class="text-3xl font-bold text-purple-700">12</p>
+            <p class="text-sm text-purple-500 mt-1">Dias Consecutivos</p>
+          </div>
+
+          <div class="p-6 bg-pink-50 rounded-2xl text-center shadow-sm">
+            <p class="text-3xl font-bold text-pink-700">48</p>
+            <p class="text-sm text-pink-500 mt-1">Tarefas Completas</p>
+          </div>
+
+          <div class="p-6 bg-blue-50 rounded-2xl text-center shadow-sm">
+            <p class="text-3xl font-bold text-blue-700">23</p>
+            <p class="text-sm text-blue-500 mt-1">Atividades</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PREFERENCES -->
+    <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm max-w-5xl w-full">
+
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">Preferências</h2>
+
+      <div class="space-y-5">
+
+        <!-- NOTIFICAÇÕES -->
+        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition">
+          <div>
+            <p class="font-medium text-gray-800">Notificações diárias</p>
+            <p class="text-sm text-gray-500">Recebe lembretes para manter o ritmo</p>
+          </div>
+
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-300 peer-focus:ring-2 peer-focus:ring-indigo-300 rounded-full peer peer-checked:bg-indigo-500 transition"></div>
+            <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full peer-checked:translate-x-5 transition"></span>
+          </label>
+        </div>
+
+        <!-- PAUSAS -->
+        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition">
+          <div>
+            <p class="font-medium text-gray-800">Lembretes de pausas</p>
+            <p class="text-sm text-gray-500">Sugestões para descansar ao longo do dia</p>
+          </div>
+
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-300 peer-focus:ring-2 peer-focus:ring-indigo-300 rounded-full peer peer-checked:bg-indigo-500 transition"></div>
+            <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full peer-checked:translate-x-5 transition"></span>
+          </label>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- EDIT PROFILE MODAL -->
+  <div id="editModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+    <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-xl">
+
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Editar Perfil</h2>
+
+      <div class="space-y-4">
+
+        <div>
+          <label class="text-sm text-gray-600">Nome</label>
+          <input id="editName" type="text" class="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none">
+        </div>
+
+        <div>
+          <label class="text-sm text-gray-600">Email</label>
+          <input id="editEmail" type="email" class="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none">
+        </div>
+
+      </div>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button id="cancelEdit" class="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 transition">Cancelar</button>
+        <button id="saveEdit" class="px-4 py-2 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 transition">Guardar</button>
+      </div>
+
+    </div>
+  </div>
+
+        <!-- LOGOUT SCRIPT -->
+        <script type="module">
+        import { logoutUser } from "../auth/auth.js";
+
+        function logout() {
+            logoutUser();
+            window.location.href = "../index.html";
+        }
+
+        window.logout = logout;
+        </script>
+
+    <script>
+    function loadProfile() {
+        const saved = JSON.parse(localStorage.getItem("profileData")) || {
+        name: "User",
+        email: "user@email.com",
+        photo: null
+        };
+
+        // Nome + Email
+        const nameEl = document.getElementById("profileName");
+        const emailEl = document.getElementById("profileEmail");
+        const avatarFallback = document.getElementById("profileAvatar");
+        const photoImg = document.getElementById("profilePhoto");
+
+        if (nameEl) nameEl.textContent = saved.name;
+        if (emailEl) emailEl.textContent = saved.email;
+
+        // Avatar
+        if (saved.photo) {
+        if (photoImg) {
+            photoImg.src = saved.photo;
+            photoImg.classList.remove("hidden");
+        }
+        if (avatarFallback) avatarFallback.classList.add("hidden");
+        } else {
+        if (avatarFallback) {
+            avatarFallback.textContent = saved.name.charAt(0).toUpperCase();
+            avatarFallback.classList.remove("hidden");
+        }
+        if (photoImg) photoImg.classList.add("hidden");
+        }
+
+        // Navbar / Dashboard avatar (se existir)
+        const navAvatar = document.getElementById("navProfilePhoto");
+        const navFallback = document.getElementById("navProfileFallback");
+
+        if (navAvatar) {
+        if (saved.photo) {
+            navAvatar.src = saved.photo;
+            navAvatar.classList.remove("hidden");
+            if (navFallback) navFallback.classList.add("hidden");
+        } else {
+            navAvatar.classList.add("hidden");
+            if (navFallback) {
+            navFallback.textContent = saved.name.charAt(0).toUpperCase();
+            navFallback.classList.remove("hidden");
+            }
+        }
+        }
+    }
+
+    loadProfile();
+
+    // Modal controls
+    const modal = document.getElementById("editModal");
+    const openBtn = document.getElementById("openEdit");
+    const cancelBtn = document.getElementById("cancelEdit");
+    const saveBtn = document.getElementById("saveEdit");
+
+    openBtn.onclick = () => {
+        const saved = JSON.parse(localStorage.getItem("profileData")) || {};
+
+        document.getElementById("editName").value = saved.name;
+        document.getElementById("editEmail").value = saved.email;
+
+        modal.classList.remove("hidden");
+    };
+
+    cancelBtn.onclick = () => modal.classList.add("hidden");
+
+    saveBtn.onclick = () => {
+        const newName = document.getElementById("editName").value.trim();
+        const newEmail = document.getElementById("editEmail").value.trim();
+
+        if (newName.length < 2) return alert("Nome demasiado curto");
+
+        const saved = JSON.parse(localStorage.getItem("profileData")) || {};
+
+        const updated = {
+        name: newName,
+        email: newEmail,
+        photo: saved.photo || null
+        };
+
+        localStorage.setItem("profileData", JSON.stringify(updated));
+
+        loadProfile();
+        modal.classList.add("hidden");
+    };
+
+    modal.onclick = (e) => {
+        if (e.target === modal) modal.classList.add("hidden");
+    };
+
+    // PHOTO UPLOAD (profile card)
+    document.getElementById("photoInput").addEventListener("change", function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+        const saved = JSON.parse(localStorage.getItem("profileData")) || {};
+
+        const updated = {
+            name: saved.name,
+            email: saved.email,
+            photo: event.target.result
+        };
+
+        localStorage.setItem("profileData", JSON.stringify(updated));
+        loadProfile();
+        };
+        reader.readAsDataURL(file);
+    });
+    </script>
+
+
+</body>
+</html>
