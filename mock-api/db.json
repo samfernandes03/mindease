@@ -5,6 +5,7 @@
       "name": "Samuel Fernandes",
       "email": "samuel.pinho.fernandes@gmail.com",
       "password": "$2b$10$pcxC4.vHjDFgrQTBJN77KOeCmKbVh.Vylmres/x1wkgRKh7OFVcOC",
+      "role": "user",
       "photo": null,
       "preferences": {
         "notifications": true,
@@ -17,13 +18,28 @@
       "name": "Samuel Fernandes",
       "email": "sam.p.fernandes@gmail.com",
       "password": "$2b$10$vtxZpiSG3FUVua.VtwOvsuq2VD0uDjzRiY0Qqs7FVranBUVWyuMpe",
+      "role": "user",
       "photo": null,
       "preferences": {
         "notifications": true,
         "breakReminders": true
       },
       "createdAt": "2026-06-16T01:01:25.226Z"
+    },
+    {
+      "id": "5f4853ec-4a65-4303-969c-d914a55405ab",
+      "name": "José Silva",
+      "email": "40210276@esmad.ipp.pt",
+      "password": "$2a$10$3.7fRshuIddh.Y.TlAlzfONTsq24uCkzLI.cX6icRPY8.0dOj.12K",
+      "role": "admin",
+      "photo": null,
+      "preferences": {
+        "notifications": true,
+        "breakReminders": true
+      },
+      "createdAt": "2026-06-17T17:35:25.860Z"
     }
+    
   ],
   "tasks": [
     {
@@ -34,6 +50,16 @@
       "mentalLoad": "High",
       "energy": "High",
       "dueDate": "2026-07-12",
+      "status": "Pending"
+    },
+    {
+      "id": "af4e609b-dbda-4b42-acbe-a9ab881e8e88",
+      "userId": "5f4853ec-4a65-4303-969c-d914a55405ab",
+      "title": "poo",
+      "category": "Cadeira",
+      "mentalLoad": "Medium",
+      "energy": "High",
+      "dueDate": "2026-06-18",
       "status": "Pending"
     }
   ]

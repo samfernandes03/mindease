@@ -171,297 +171,259 @@
   </main>
 
   <!-- SCRIPT -->
-  <script>
-    import { requireAuth } from "../assets/js/authGuard.js";
-    requireAuth();
-    
-    let mode = "light";
-    let focusTime = 25 * 60;
-    let breakTime = 5 * 60;
-    let timeLeft = focusTime;
-    let interval = null;
-    let isRunning = false;
+<script type="module">
+  import { requireAuth } from "../assets/js/authGuard.js";
+  import { logout } from "../assets/js/logout.js";
+  import FocusSession from "../models/FocusSession.js";
+  import { addFocusPoints } from "../assets/js/gamificationService.js";
 
-    const timerDisplay = document.getElementById("timerDisplay");
-    const focusState = document.getElementById("focusState");
+  const user = await requireAuth();
+  window.logout = logout;
 
-    function updateDisplay() {
-      const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
-      const s = (timeLeft % 60).toString().padStart(2, "0");
-      timerDisplay.textContent = `${m}:${s}`;
-    }
+  // -----------------------------
+  // VARIÁVEIS DO TIMER
+  // -----------------------------
 
-    // -----------------------------
-    // ESTATÍSTICAS + HISTÓRICO
-    // -----------------------------
+  let mode = "light";
+  let focusTime = 25 * 60;
+  let breakTime = 5 * 60;
+  let timeLeft = focusTime;
+  let interval = null;
+  let isRunning = false;
+  let isFocusPeriod = true;
 
-    function loadStats() {
-      const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-        minutes: 0,
-        sessions: 0,
-        modeCount: { light: 0, deep: 0 }
-      };
+  const focusStatsKey = `focusStats_${user.id}`;
+  const focusHistoryKey = `focusHistory_${user.id}`;
 
-      document.getElementById("statsMinutes").textContent = stats.minutes;
-      document.getElementById("statsSessions").textContent = stats.sessions;
+  // -----------------------------
+  // ELEMENTOS DO DOM
+  // -----------------------------
 
-      const mostUsed =
-        stats.modeCount.light > stats.modeCount.deep ? "Foco Leve" :
-        stats.modeCount.deep > stats.modeCount.light ? "Foco Profundo" :
-        "—";
+  const timerDisplay = document.getElementById("timerDisplay");
+  const focusState = document.getElementById("focusState");
+  const playBtn = document.getElementById("playBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const modeLight = document.getElementById("modeLight");
+  const modeDeep = document.getElementById("modeDeep");
+  const playIcon = document.getElementById("playIcon");
+  const pauseIcon = document.getElementById("pauseIcon");
 
-      document.getElementById("statsMode").textContent = mostUsed;
-    }
+  // -----------------------------
+  // ATUALIZAR DISPLAY DO TIMER
+  // -----------------------------
 
-    function saveSession(duration, mode) {
-      const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-        minutes: 0,
-        sessions: 0,
-        modeCount: { light: 0, deep: 0 }
-      };
+  function updateDisplay() {
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+    const s = (timeLeft % 60).toString().padStart(2, "0");
 
-      stats.minutes += duration;
-      stats.sessions += 1;
-      stats.modeCount[mode]++;
+    timerDisplay.textContent = `${m}:${s}`;
+  }
 
-      localStorage.setItem("focusStats", JSON.stringify(stats));
+  // -----------------------------
+  // ESTATÍSTICAS + HISTÓRICO
+  // GUARDADOS NO LOCALSTORAGE
+  // -----------------------------
 
-      const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
-      const now = new Date();
-
-      history.unshift({
-        time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        duration,
-        mode,
-        date: now.toLocaleDateString()
-      });
-
-      localStorage.setItem("focusHistory", JSON.stringify(history));
-
-      loadStats();
-      loadHistory();
-    }
-
-// -----------------------------
-// ESTATÍSTICAS + HISTÓRICO (GUARDADOS NO LOCALSTORAGE)
-// -----------------------------
-
-function loadStats() {
-  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-    minutes: 0,
-    sessions: 0,
-    modeCount: { light: 0, deep: 0 }
-  };
-
-  document.getElementById("statsMinutes").textContent = stats.minutes;
-  document.getElementById("statsSessions").textContent = stats.sessions;
-
-  const mostUsed =
-    stats.modeCount.light > stats.modeCount.deep ? "Foco Leve" :
-    stats.modeCount.deep > stats.modeCount.light ? "Foco Profundo" :
-    "—";
-
-  document.getElementById("statsMode").textContent = mostUsed;
-}
-
-function saveSession(duration, mode) {
-  // --- ESTATÍSTICAS ---
-  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-    minutes: 0,
-    sessions: 0,
-    modeCount: { light: 0, deep: 0 }
-  };
-
-  stats.minutes += duration;
-  stats.sessions += 1;
-  stats.modeCount[mode]++;
-
-  localStorage.setItem("focusStats", JSON.stringify(stats));
-
-  // --- HISTÓRICO ---
-  const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
-  const now = new Date();
-
-  history.unshift({
-    time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    duration,
-    mode,
-    date: now.toLocaleDateString()
-  });
-
-  localStorage.setItem("focusHistory", JSON.stringify(history));
-
-  loadStats();
-  loadHistory();
-}
-
-    function loadHistory() {
-      const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
-      const container = document.getElementById("historyList");
-
-      if (history.length === 0) {
-        container.innerHTML = `<p class="text-gray-400">Nenhuma sessão registada ainda.</p>`;
-        return;
+  function getDefaultStats() {
+    return {
+      minutes: 0,
+      sessions: 0,
+      modeCount: {
+        light: 0,
+        deep: 0
       }
-
-  container.innerHTML = history
-    .map(item => `
-      <div class="p-3 border border-gray-200 rounded-xl">
-        <p><strong>${item.time}</strong> — ${item.duration} min — 
-        ${item.mode === "light" ? "Foco Leve" : "Foco Profundo"}</p>
-      </div>
-    `)
-    .join("");
-}
-
-    // -----------------------------
-    // TIMER
-    // -----------------------------
-
-    function togglePlayPause() {
-      const playIcon = document.getElementById("playIcon");
-      const pauseIcon = document.getElementById("pauseIcon");
-
-      if (isRunning) {
-        clearInterval(interval);
-        isRunning = false;
-        playIcon.classList.remove("hidden");
-        pauseIcon.classList.add("hidden");
-        return;
-      }
-
-      isRunning = true;
-      playIcon.classList.add("hidden");
-      pauseIcon.classList.remove("hidden");
-
-      interval = setInterval(() => {
-        timeLeft--;
-        updateDisplay();
-
-        if (timeLeft <= 0) {
-          clearInterval(interval);
-          isRunning = false;
-
-          const duration = focusState.textContent.includes("Foco")
-            ? focusTime / 60
-            : breakTime / 60;
-
-          saveSession(duration, mode);
-
-          if (focusState.textContent.includes("Foco")) {
-            focusState.textContent = "Pausa — Respira um pouco";
-            timeLeft = breakTime;
-          } else {
-            focusState.textContent = "Foco — Concentra-te";
-            timeLeft = focusTime;
-          }
-
-          togglePlayPause();
-        }
-      }, 1000);
-    }
-
-    document.getElementById("playBtn").onclick = togglePlayPause;
-
-    document.getElementById("resetBtn").onclick = () => {
-      clearInterval(interval);
-      isRunning = false;
-      timeLeft = focusTime;
-      focusState.textContent = "Foco — Concentra-te";
-
-      document.getElementById("playIcon").classList.remove("hidden");
-      document.getElementById("pauseIcon").classList.add("hidden");
-
-      updateDisplay();
     };
+  }
 
-    document.getElementById("modeLight").onclick = () => {
-      mode = "light";
-      focusTime = 25 * 60;
-      breakTime = 5 * 60;
-      timeLeft = focusTime;
-      isRunning = false;
+  function loadStats() {
+    const stats = JSON.parse(localStorage.getItem(focusStatsKey)) || getDefaultStats();
 
-      document.getElementById("playIcon").classList.remove("hidden");
-      document.getElementById("pauseIcon").classList.add("hidden");
+    document.getElementById("statsMinutes").textContent = stats.minutes;
+    document.getElementById("statsSessions").textContent = stats.sessions;
 
-      focusState.textContent = "Foco — Concentra-te";
-      updateDisplay();
-    };
+    const mostUsed =
+      stats.modeCount.light > stats.modeCount.deep
+        ? "Foco Leve"
+        : stats.modeCount.deep > stats.modeCount.light
+          ? "Foco Profundo"
+          : "—";
 
-    document.getElementById("modeDeep").onclick = () => {
-      mode = "deep";
-      focusTime = 50 * 60;
-      breakTime = 10 * 60;
-      timeLeft = focusTime;
-      isRunning = false;
+    document.getElementById("statsMode").textContent = mostUsed;
+  }
 
-      document.getElementById("playIcon").classList.remove("hidden");
-      document.getElementById("pauseIcon").classList.add("hidden");
+  function saveSession(duration, currentMode) {
+    // --- ESTATÍSTICAS ---
+    const stats = JSON.parse(localStorage.getItem(focusStatsKey)) || getDefaultStats();
 
-      focusState.textContent = "Foco — Concentra-te";
-      updateDisplay();
-    };
+    stats.minutes += duration;
+    stats.sessions += 1;
+    stats.modeCount[currentMode] += 1;
+
+    localStorage.setItem(focusStatsKey, JSON.stringify(stats));
+
+    // --- HISTÓRICO ---
+    const history = JSON.parse(localStorage.getItem(focusHistoryKey)) || [];
+
+    const session = new FocusSession({
+      mode: currentMode,
+      duration,
+      breakDuration: breakTime / 60,
+      completed: true,
+      userId: user.id
+    });
+
+    history.unshift(session);
+
+    localStorage.setItem(focusHistoryKey, JSON.stringify(history));
 
     loadStats();
     loadHistory();
+  }
+
+  function loadHistory() {
+    const history = (JSON.parse(localStorage.getItem(focusHistoryKey)) || [])
+      .map((item) => new FocusSession(item));
+    const container = document.getElementById("historyList");
+
+    if (history.length === 0) {
+      container.innerHTML = `<p class="text-gray-400">Nenhuma sessão registada ainda.</p>`;
+      return;
+    }
+
+    container.innerHTML = history
+      .map((item) => `
+        <div class="p-3 border border-gray-200 rounded-xl">
+          <p>
+            <strong>${item.getFormattedTime()}</strong> — ${item.duration} min — 
+            ${item.getModeLabel()}
+          </p>
+          <p class="text-xs text-gray-400">${item.getFormattedDate()}</p>
+        </div>
+      `)
+      .join("");
+  }
+
+  // -----------------------------
+  // ÍCONES DO BOTÃO PLAY / PAUSE
+  // -----------------------------
+
+  function showPlayIcon() {
+    playIcon.classList.remove("hidden");
+    pauseIcon.classList.add("hidden");
+  }
+
+  function showPauseIcon() {
+    playIcon.classList.add("hidden");
+    pauseIcon.classList.remove("hidden");
+  }
+
+  // -----------------------------
+  // TIMER
+  // -----------------------------
+
+  function stopTimer() {
+    clearInterval(interval);
+    interval = null;
+    isRunning = false;
+    showPlayIcon();
+  }
+
+  function startTimer() {
+    isRunning = true;
+    showPauseIcon();
+
+    interval = setInterval(() => {
+      timeLeft -= 1;
+      updateDisplay();
+
+      if (timeLeft <= 0) {
+        stopTimer();
+
+        if (isFocusPeriod) {
+          // Guarda apenas sessões de foco completas
+          saveSession(focusTime / 60, mode);
+          addFocusPoints(user.id);
+
+          isFocusPeriod = false;
+          timeLeft = breakTime;
+          focusState.textContent = "Pausa — Respira um pouco";
+        } else {
+          isFocusPeriod = true;
+          timeLeft = focusTime;
+          focusState.textContent = "Foco — Concentra-te";
+        }
+
+        updateDisplay();
+      }
+    }, 1000);
+  }
+
+  function togglePlayPause() {
+    if (isRunning) {
+      stopTimer();
+      return;
+    }
+
+    startTimer();
+  }
+
+  function resetTimer() {
+    stopTimer();
+
+    isFocusPeriod = true;
+    timeLeft = focusTime;
+    focusState.textContent = "Foco — Concentra-te";
+
     updateDisplay();
+  }
 
-    // -----------------------------
-// ESTATÍSTICAS + HISTÓRICO (GUARDADOS NO LOCALSTORAGE)
-// -----------------------------
+  // -----------------------------
+  // MODOS DE FOCO
+  // -----------------------------
 
-function loadStats() {
-  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-    minutes: 0,
-    sessions: 0,
-    modeCount: { light: 0, deep: 0 }
-  };
+  function changeMode(newMode) {
+    stopTimer();
 
-  document.getElementById("statsMinutes").textContent = stats.minutes;
-  document.getElementById("statsSessions").textContent = stats.sessions;
+    mode = newMode;
 
-  const mostUsed =
-    stats.modeCount.light > stats.modeCount.deep ? "Foco Leve" :
-    stats.modeCount.deep > stats.modeCount.light ? "Foco Profundo" :
-    "—";
+    if (mode === "light") {
+      focusTime = 25 * 60;
+      breakTime = 5 * 60;
+    } else {
+      focusTime = 50 * 60;
+      breakTime = 10 * 60;
+    }
 
-  document.getElementById("statsMode").textContent = mostUsed;
-}
+    isFocusPeriod = true;
+    timeLeft = focusTime;
+    focusState.textContent = "Foco — Concentra-te";
 
-function saveSession(duration, mode) {
-  // --- ESTATÍSTICAS ---
-  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-    minutes: 0,
-    sessions: 0,
-    modeCount: { light: 0, deep: 0 }
-  };
+    modeLight.classList.toggle("ring-2", mode === "light");
+    modeLight.classList.toggle("ring-indigo-400", mode === "light");
 
-  stats.minutes += duration;
-  stats.sessions += 1;
-  stats.modeCount[mode]++;
+    modeDeep.classList.toggle("ring-2", mode === "deep");
+    modeDeep.classList.toggle("ring-indigo-400", mode === "deep");
 
-  localStorage.setItem("focusStats", JSON.stringify(stats));
+    updateDisplay();
+  }
 
-  // --- HISTÓRICO ---
-  const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
-  const now = new Date();
+  // -----------------------------
+  // EVENTOS
+  // -----------------------------
 
-  history.unshift({
-    time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    duration,
-    mode,
-    date: now.toLocaleDateString()
-  });
+  playBtn.addEventListener("click", togglePlayPause);
+  resetBtn.addEventListener("click", resetTimer);
+  modeLight.addEventListener("click", () => changeMode("light"));
+  modeDeep.addEventListener("click", () => changeMode("deep"));
 
-  localStorage.setItem("focusHistory", JSON.stringify(history));
+  // -----------------------------
+  // INICIALIZAÇÃO DA PÁGINA
+  // -----------------------------
 
   loadStats();
   loadHistory();
-}
-
-
-  </script>
+  updateDisplay();
+</script>
 
 </body>
 </html>

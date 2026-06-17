@@ -298,9 +298,14 @@
   </main>
 
   <!-- CHART SCRIPT -->
-  <script>
+  <script type="module">
     import { requireAuth } from "../assets/js/authGuard.js";
-    requireAuth();
+    import { logout } from "../assets/js/logout.js";
+    import MoodEntry from "../models/MoodEntry.js";
+    import { addMoodPoints } from "../assets/js/gamificationService.js";
+
+    const user = await requireAuth();
+    window.logout = logout;
     
     const ctx = document.getElementById('moodChart').getContext('2d');
 
@@ -344,8 +349,16 @@
   /* -------------------------
      LOCAL STORAGE DATA
   ------------------------- */
-  let moodLogs = JSON.parse(localStorage.getItem("moodLogs") || "[]");
+  const moodStorageKey = `moodLogs_${user.id}`;
+
+  let moodLogs = (JSON.parse(localStorage.getItem(moodStorageKey)) || [])
+    .map((mood) => new MoodEntry(mood));
+
   let editingIndex = null;
+
+  function saveMoodLogs() {
+    localStorage.setItem(moodStorageKey, JSON.stringify(moodLogs));
+  }
 
     // Mood selection logic (THIS WAS MISSING)
   document.querySelectorAll(".mood-btn").forEach(btn => {
@@ -371,15 +384,16 @@
       return;
     }
 
-    const entry = {
-      mood: selected.dataset.mood,
-      score: Number(selected.dataset.score),
-      message: document.getElementById("moodMessage").value,
-      date: new Date().toLocaleString()
-    };
+    const entry = new MoodEntry({
+      mood: Number(selected.dataset.score),
+      note: document.getElementById("moodMessage").value,
+      userId: user.id
+    });
 
     moodLogs.push(entry);
-    localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
+    saveMoodLogs();
+
+    addMoodPoints(user.id);
 
     document.getElementById("moodMessage").value = "";
     selected.classList.remove("selected");
@@ -400,21 +414,24 @@
 
     container.innerHTML = moodLogs.map((entry, index) => `
       <div class="mood-entry p-4 border rounded-xl bg-gray-50 flex justify-between items-start">
-        
-        <div>
-          <p class="font-semibold text-gray-800">${entry.mood}
-            <span class="text-xs text-gray-500 ml-2">${entry.date}</span>
-          </p>
-          <p class="text-gray-600 mt-1">${entry.message || "<i>No message</i>"}</p>
-        </div>
+    
+      <div>
+        <p class="font-semibold text-gray-800">
+          ${entry.getMoodEmoji()} ${entry.getMoodLabel()}
+          <span class="text-xs text-gray-500 ml-2">
+          ${entry.getFormattedDate()} ${entry.getFormattedTime()}
+        </span>
+        </p>
+        <p class="text-gray-600 mt-1">${entry.note || "<i>No message</i>"}</p>
+      </div>
 
-        <div class="flex gap-3">
-          <button onclick="editMood(${index})" class="text-indigo-600 font-medium text-sm">Edit</button>
-          <button onclick="deleteMood(${index})" class="text-red-600 font-medium text-sm">Delete</button>
-        </div>
+      <div class="flex gap-3">
+        <button onclick="editMood(${index})" class="text-indigo-600 font-medium text-sm">Edit</button>
+        <button onclick="deleteMood(${index})" class="text-red-600 font-medium text-sm">Delete</button>
+      </div>
 
       </div>
-    `).join("");
+      `).join("");
   }
 
   /* -------------------------
@@ -422,7 +439,7 @@
   ------------------------- */
   function deleteMood(index) {
     moodLogs.splice(index, 1);
-    localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
+    saveMoodLogs();
     renderMoodHistory();
   }
 
@@ -434,7 +451,7 @@
     const entry = moodLogs[index];
 
     document.getElementById("editMoodSelect").value = entry.mood;
-    document.getElementById("editMoodMessage").value = entry.message;
+    document.getElementById("editMoodMessage").value = entry.note;
 
     const modal = document.getElementById("editMoodModal");
     modal.classList.remove("hidden");
@@ -462,7 +479,7 @@
     moodLogs[editingIndex].mood = newMood;
     moodLogs[editingIndex].message = newMessage;
 
-    localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
+    saveMoodLogs();
 
     closeEditModal();
     renderMoodHistory();
@@ -474,6 +491,12 @@
   document.getElementById("editMoodModal").addEventListener("click", (e) => {
     if (e.target.id === "editMoodModal") closeEditModal();
   });
+
+  window.saveMood = saveMood;
+  window.deleteMood = deleteMood;
+  window.editMood = editMood;
+  window.closeEditModal = closeEditModal;
+  window.saveEditedMood = saveEditedMood;
 
   /* -------------------------
      INITIAL RENDER

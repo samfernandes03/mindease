@@ -65,6 +65,13 @@
       </div>
     </a>
 
+    <!-- ADMIN -->
+    <a href="./admin.html" id="adminNavLink" class="group hidden">
+      <div class="w-14 h-14 rounded-2xl bg-purple-500 text-white flex items-center justify-center shadow-sm hover:bg-purple-600 transition">
+        ⚙️
+      </div>
+    </a>
+
     <!-- LOGOUT -->
     <button onclick="logout()" class="group mt-auto mb-4">
       <div class="w-14 h-14 rounded-2xl bg-purple-300 flex items-center justify-center shadow-sm hover:bg-purple-400 transition">
@@ -110,27 +117,19 @@
         <canvas id="moodChart" height="120"></canvas>
       </div>
 
-      <!-- WELL-BEING SUGGESTIONS -->
+      <!-- PERSONALIZED RECOMMENDATIONS -->
       <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Well-being Suggestions</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Recomendações</h2>
 
-        <div class="space-y-4">
-          <div class="p-4 bg-indigo-50 rounded-xl">
-            <p class="font-medium text-indigo-700">5-minute breathing</p>
-            <p class="text-sm text-indigo-500">Relax and reset your mind</p>
-          </div>
-
-          <div class="p-4 bg-purple-50 rounded-xl">
-            <p class="font-medium text-purple-700">Gentle stretching</p>
-            <p class="text-sm text-purple-500">10 minutes of light movement</p>
-          </div>
+        <div id="recommendationsList" class="space-y-4">
+          <p class="text-sm text-gray-500">A carregar recomendações...</p>
         </div>
       </div>
 
     </div>
 
     <!-- TASK OVERVIEW CARDS -->
-    <div id="taskStats" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+    <div id="taskStats" class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-10">
 
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
         <h3 class="text-lg font-semibold text-gray-800 mb-2">Tasks Today</h3>
@@ -147,6 +146,29 @@
         <p id="tasksUpcomingCount" class="text-3xl font-bold text-yellow-500">0</p>
       </div>
 
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Pontos</h3>
+        <p id="gamificationPoints" class="text-3xl font-bold text-purple-600">0</p>
+        <p id="gamificationLevel" class="text-sm text-gray-500 mt-1">Nível 1 — Iniciante</p>
+      </div>
+
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-10">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Notificações</h3>
+
+      <div id="notificationsList" class="space-y-3">
+        <p class="text-sm text-gray-500">Sem notificações no momento.</p>
+      </div>
+    </div>
+
+    <!-- GAMIFICATION BADGES -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-10">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Conquistas</h3>
+      <div id="badgesList" class="flex flex-wrap gap-3">
+        <p class="text-sm text-gray-500">Ainda não tens conquistas desbloqueadas.</p>
+      </div>
     </div>
 
     <!-- PROGRESS BAR -->
@@ -158,6 +180,15 @@
       </div>
 
       <p id="taskProgressText" class="mt-2 text-sm text-gray-600">0% completed</p>
+    </div>
+
+    <!-- FAVORITE ACTIVITIES -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-10">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Atividades Favoritas</h3>
+
+      <div id="favoriteActivitiesList" class="space-y-4">
+        <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+      </div>
     </div>
 
     <!-- NEXT TASKS -->
@@ -174,6 +205,8 @@
   import { requireAuth } from "../assets/js/authGuard.js";
   import { logout } from "../assets/js/logout.js";
   import { apiGetAuth } from "../assets/js/api.js";
+  import { loadGamification } from "../assets/js/gamificationService.js";
+  import { loadFavorites } from "../assets/js/favoritesService.js";
 
   window.logout = logout;
 
@@ -181,6 +214,12 @@
      1) USER AUTH + PROFILE
   ----------------------------------------- */
   const user = await requireAuth();
+
+  const adminNavLink = document.getElementById("adminNavLink");
+
+  if (user.role === "admin" && adminNavLink) {
+    adminNavLink.classList.remove("hidden");
+  }
 
   // Atualizar nome
   document.querySelector("h1").textContent = `Welcome back, ${user.name}`;
@@ -212,7 +251,218 @@
   });
 
   /* -----------------------------------------
-     3) LOAD TASKS FROM BACKEND
+     3) GAMIFICAÇÃO
+  ----------------------------------------- */
+  const gamification = loadGamification(user.id);
+
+  document.getElementById("gamificationPoints").textContent = gamification.points;
+  document.getElementById(
+    "gamificationLevel"
+  ).textContent = `Nível ${gamification.level} — ${gamification.getLevelLabel()}`;
+
+  function renderBadges() {
+    const badgesList = document.getElementById("badgesList");
+
+    if (gamification.badges.length === 0) {
+      badgesList.innerHTML = `
+        <p class="text-sm text-gray-500">Ainda não tens conquistas desbloqueadas.</p>
+      `;
+      return;
+    }
+
+    badgesList.innerHTML = gamification.badges
+      .map((badge) => `
+        <span class="px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium">
+          🏅 ${badge}
+        </span>
+      `)
+      .join("");
+  }
+
+  renderBadges();
+
+  /* -----------------------------------------
+     4) FAVORITOS
+  ----------------------------------------- */
+  const wellbeingActivities = [
+    {
+      id: "diaphragmatic",
+      title: "Respiração Diafragmática",
+      description: "Exercício de respiração para reduzir ansiedade."
+    },
+    {
+      id: "bodyscan",
+      title: "Body Scan",
+      description: "Exercício de atenção ao corpo e relaxamento."
+    },
+    {
+      id: "grounding",
+      title: "Grounding 5-4-3-2-1",
+      description: "Técnica para recuperar foco no momento presente."
+    },
+    {
+      id: "stretching",
+      title: "Alongamento Suave",
+      description: "Movimentos leves para aliviar tensão física."
+    }
+  ];
+
+  function renderFavoriteActivities() {
+    const favorites = loadFavorites(user.id);
+    const container = document.getElementById("favoriteActivitiesList");
+
+    if (favorites.length === 0) {
+      container.innerHTML = `
+        <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+      `;
+      return;
+    }
+
+    const favoriteActivities = wellbeingActivities.filter((activity) =>
+      favorites.includes(activity.id)
+    );
+
+    if (favoriteActivities.length === 0) {
+      container.innerHTML = `
+        <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+      `;
+      return;
+    }
+
+    container.innerHTML = favoriteActivities
+      .map((activity) => `
+        <div class="p-4 bg-purple-50 border border-purple-100 rounded-xl flex justify-between items-center">
+          <div>
+            <p class="font-medium text-purple-700">${activity.title}</p>
+            <p class="text-sm text-purple-500">${activity.description}</p>
+          </div>
+
+          <a href="./wellbeing.html" class="text-sm font-medium text-purple-700 hover:underline">
+            Abrir
+          </a>
+        </div>
+      `)
+      .join("");
+  }
+
+  renderFavoriteActivities();
+
+  /* -----------------------------------------
+     5) RECOMENDAÇÕES PERSONALIZADAS
+  ----------------------------------------- */
+  function renderRecommendations() {
+    const container = document.getElementById("recommendationsList");
+    const recommendations = [];
+
+    if (gamification.moodEntries === 0) {
+      recommendations.push({
+        title: "Regista o teu primeiro mood",
+        description: "Ajuda a aplicação a perceber melhor o teu estado emocional.",
+        link: "./mood.html"
+      });
+    }
+
+    if (gamification.focusSessions === 0) {
+      recommendations.push({
+        title: "Experimenta uma sessão de foco",
+        description: "O modo foco pode ajudar-te a organizar melhor o estudo.",
+        link: "./focus.html"
+      });
+    }
+
+    if (gamification.completedActivities === 0) {
+      recommendations.push({
+        title: "Completa uma atividade de bem-estar",
+        description: "Começa por uma respiração guiada de poucos minutos.",
+        link: "./wellbeing.html"
+      });
+    }
+
+    if (gamification.moodEntries >= 3 && gamification.focusSessions < 2) {
+      recommendations.push({
+        title: "Equilibra emoções com foco",
+        description: "Já tens vários registos emocionais. Experimenta agora uma sessão de foco.",
+        link: "./focus.html"
+      });
+    }
+
+    if (gamification.focusSessions >= 3 && gamification.completedActivities < 2) {
+      recommendations.push({
+        title: "Faz uma pausa ativa",
+        description: "Como já tens usado o foco, experimenta alongamentos ou body scan.",
+        link: "./wellbeing.html"
+      });
+    }
+
+    if (recommendations.length === 0) {
+      recommendations.push({
+        title: "Continua o teu progresso",
+        description: "Explora novas atividades e mantém o acompanhamento do teu bem-estar.",
+        link: "./wellbeing.html"
+      });
+    }
+
+    container.innerHTML = recommendations
+      .slice(0, 2)
+      .map((item) => `
+        <a href="${item.link}" class="block p-4 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition">
+          <p class="font-medium text-indigo-700">${item.title}</p>
+          <p class="text-sm text-indigo-500">${item.description}</p>
+        </a>
+      `)
+      .join("");
+  }
+
+  renderRecommendations();
+
+  /* -----------------------------------------
+     6) NOTIFICAÇÕES
+  ----------------------------------------- */
+  function renderNotifications() {
+    const container = document.getElementById("notificationsList");
+    const notifications = [];
+
+    if (gamification.points === 0) {
+      notifications.push("Começa por registar o teu mood ou concluir uma atividade para ganhares pontos.");
+    }
+
+    if (gamification.moodEntries >= 3) {
+      notifications.push("Boa! Já fizeste vários registos emocionais. Continua a acompanhar o teu estado.");
+    }
+
+    if (gamification.focusSessions >= 3) {
+      notifications.push("Tens mantido boas sessões de foco. Continua assim!");
+    }
+
+    if (gamification.completedActivities >= 1) {
+      notifications.push("Já concluíste atividades de bem-estar. Explora novas técnicas para variar.");
+    }
+
+    if (tasks.length > 0) {
+      const overdueTasks = tasks.filter((task) =>
+        new Date(task.dueDate) < today && task.status !== "Done"
+      );
+
+      if (overdueTasks.length > 0) {
+        notifications.push(`Tens ${overdueTasks.length} tarefa(s) em atraso. Tenta reorganizar o teu plano.`);
+      }
+    }
+
+    if (notifications.length === 0) {
+      notifications.push("Está tudo tranquilo por agora. Continua a cuidar do teu bem-estar.");
+    }
+
+    container.innerHTML = notifications
+      .map((notification) => `
+        <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-xl text-sm text-indigo-700">
+          ${notification}
+        </div>
+      `)
+      .join("");
+  }
+
+  /* -----------------------------------------
+     7) LOAD TASKS FROM BACKEND
   ----------------------------------------- */
   const token = localStorage.getItem("token");
   let tasks = [];
@@ -222,10 +472,11 @@
     updateStats();
     updateProgress();
     updateNextTasks();
+    renderNotifications();
   }
 
   /* -----------------------------------------
-     4) TASK STATS (Today / Overdue / Upcoming)
+     8) TASK STATS (Today / Overdue / Upcoming)
   ----------------------------------------- */
   function updateStats() {
     const todayStr = today.toISOString().split("T")[0];
@@ -243,7 +494,7 @@
   }
 
   /* -----------------------------------------
-     5) PROGRESS BAR
+     9) PROGRESS BAR
   ----------------------------------------- */
   function updateProgress() {
     const done = tasks.filter(t => t.status === "Done").length;
@@ -256,7 +507,7 @@
   }
 
   /* -----------------------------------------
-     6) NEXT TASKS LIST
+     10) NEXT TASKS LIST
   ----------------------------------------- */
   function updateNextTasks() {
     const upcoming = tasks
@@ -286,24 +537,24 @@
   }
 
   /* -----------------------------------------
-     7) MOOD CHART
+     11) MOOD CHART
   ----------------------------------------- */
-  const ctx = document.getElementById('moodChart').getContext('2d');
+  const ctx = document.getElementById("moodChart").getContext("2d");
 
   new Chart(ctx, {
-    type: 'line',
+    type: "line",
     data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
       datasets: [{
-        label: 'Mood',
+        label: "Mood",
         data: [3, 4, 2, 5, 4, 3, 4],
-        borderColor: '#6366F1',
-        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+        borderColor: "#6366F1",
+        backgroundColor: "rgba(99, 102, 241, 0.2)",
         borderWidth: 3,
         tension: 0.4,
         fill: true,
         pointRadius: 5,
-        pointBackgroundColor: '#6366F1'
+        pointBackgroundColor: "#6366F1"
       }]
     },
     options: {
@@ -314,11 +565,10 @@
   });
 
   /* -----------------------------------------
-     8) INIT
+     12) INIT
   ----------------------------------------- */
   loadTasks();
 </script>
-
 
 </body>
 </html>
