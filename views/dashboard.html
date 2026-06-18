@@ -147,7 +147,38 @@
         <p id="tasksUpcomingCount" class="text-3xl font-bold text-yellow-500">0</p>
       </div>
 
-    </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Your Progress</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <!-- Points -->
+          <div class="p-4 bg-purple-50 rounded-xl border border-purple-100">
+            <p class="text-sm text-purple-600">Points</p>
+            <p id="gamificationPoints" class="text-2xl font-bold text-purple-700 mt-1">0</p>
+          </div>
+
+          <!-- Level -->
+          <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+            <p class="text-sm text-indigo-600">Level</p>
+            <p id="gamificationLevel" class="text-lg font-semibold text-indigo-700 mt-1">
+              Level 1 — Beginner
+            </p>
+          </div>
+
+          <!-- Progress -->
+          <div class="p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <p class="text-sm text-gray-600">Progress</p>
+
+            <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+              <div class="bg-gray-700 h-2 rounded-full" style="width: 40%"></div>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-2">Towards next level</p>
+          </div>
+
+        </div>
+      </div>
 
     <!-- PROGRESS BAR -->
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-10">
@@ -184,33 +215,42 @@
   import { logout } from "../assets/js/logout.js";
   import { apiGetAuth } from "../assets/js/api.js";
   import { loadFavorites } from "../assets/js/favoritesService.js";
+  import { loadGamification } from "../assets/js/gamificationService.js";
 
   window.logout = logout;
 
-    function normalizeDate(date) {
-      return new Date(date).toISOString().split("T")[0];
+  function startOfDay(date) {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      return d;
   }
 
-  const wellbeingActivities = [
+  const isSameDay = (a, b) =>
+    startOfDay(a).getTime() === startOfDay(b).getTime();
+
+  const isBeforeToday = (date) =>
+      startOfDay(date) < startOfDay(new Date());
+
+const wellbeingActivities = [
   {
     id: "diaphragmatic",
-    title: "Respiração Diafragmática",
-    description: "Exercício de respiração para reduzir ansiedade."
+    title: "Diaphragmatic Breathing",
+    description: "Breathing exercise to reduce anxiety."
   },
   {
     id: "bodyscan",
     title: "Body Scan",
-    description: "Exercício de atenção ao corpo e relaxamento."
+    description: "Body awareness and relaxation exercise."
   },
   {
     id: "grounding",
-    title: "Grounding 5-4-3-2-1",
-    description: "Técnica para recuperar foco no momento presente."
+    title: "5-4-3-2-1 Grounding",
+    description: "Technique to bring attention back to the present moment."
   },
   {
     id: "stretching",
-    title: "Alongamento Suave",
-    description: "Movimentos leves para aliviar tensão física."
+    title: "Gentle Stretching",
+    description: "Light movements to release physical tension."
   }
 ];
 
@@ -222,7 +262,7 @@ function renderFavoriteActivities() {
 
   if (favorites.length === 0) {
     container.innerHTML = `
-      <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+      <p class="text-gray-500 text-sm">You don't have any favorite activities yet.</p>
     `;
     return;
   }
@@ -233,10 +273,11 @@ function renderFavoriteActivities() {
 
   if (favoriteActivities.length === 0) {
     container.innerHTML = `
-      <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+      <p class="text-gray-500 text-sm">You don't have any favorite activities yet.</p>
     `;
     return;
   }
+
 
   container.innerHTML = favoriteActivities
     .map((activity) => `
@@ -277,6 +318,13 @@ function renderFavoriteActivities() {
     navPhoto.classList.add("hidden");
   }
 
+      const gamification = loadGamification(user.id);
+
+      document.getElementById("gamificationPoints").textContent = gamification.points;
+
+      document.getElementById("gamificationLevel").textContent =
+          `Level ${gamification.level} — ${gamification.getLevelLabel()}`;
+
   /* -----------------------------------------
      2) DATA ATUAL
   ----------------------------------------- */
@@ -305,29 +353,29 @@ function renderFavoriteActivities() {
   /* -----------------------------------------
      4) TASK STATS (Today / Overdue / Upcoming)
   ----------------------------------------- */
-  function updateStats() {
-    const todayStr = normalizeDate(new Date());
+function updateStats() {
+  const today = startOfDay(new Date());
 
-    const todayTasks = tasks.filter(t =>
-      normalizeDate(t.dueDate) === todayStr
-    );
+  const todayTasks = tasks.filter(t => {
+    const due = startOfDay(t.dueDate);
+    return due.getTime() === today.getTime();
+  });
 
-    const overdueTasks = tasks.filter(t =>
-      normalizeDate(t.dueDate) < todayStr && t.status !== "Done"
-    );
+  const overdueTasks = tasks.filter(t => {
+    const due = startOfDay(t.dueDate);
+    return due < today && t.status !== "Done";
+  });
 
-    const upcomingTasks = tasks.filter(t => {
-      const diff =
-        (new Date(t.dueDate) - new Date(todayStr)) /
-        (1000 * 60 * 60 * 24);
+  const upcomingTasks = tasks.filter(t => {
+    const due = startOfDay(t.dueDate);
+    const diffDays = (due - today) / (1000 * 60 * 60 * 24);
+    return diffDays > 0 && diffDays <= 7;
+  });
 
-      return diff > 0 && diff <= 7;
-    });
-
-    document.getElementById("tasksTodayCount").textContent = todayTasks.length;
-    document.getElementById("tasksOverdueCount").textContent = overdueTasks.length;
-    document.getElementById("tasksUpcomingCount").textContent = upcomingTasks.length;
-  }
+  document.getElementById("tasksTodayCount").textContent = todayTasks.length;
+  document.getElementById("tasksOverdueCount").textContent = overdueTasks.length;
+  document.getElementById("tasksUpcomingCount").textContent = upcomingTasks.length;
+}
   /* -----------------------------------------
      5) PROGRESS BAR
   ----------------------------------------- */
@@ -341,12 +389,56 @@ function renderFavoriteActivities() {
     document.getElementById("taskProgressText").textContent = `${percent}% completed`;
   }
 
+    function renderBadges() {
+    const badgesList = document.getElementById("badgesList");
+
+    if (!badgesList) return;
+
+    if (!gamification.badges || gamification.badges.length === 0) {
+      badgesList.innerHTML = `
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-10">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Conquistas</h3>
+
+          <div id="badgesList" class="flex flex-wrap gap-3">
+            <p class="text-sm text-gray-500">Ainda não tens conquistas desbloqueadas.</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    badgesList.innerHTML = gamification.badges
+      .map(badge => `
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full 
+                    bg-purple-50 border border-purple-200 
+                    text-purple-700 text-sm font-medium shadow-sm
+                    hover:bg-purple-100 transition">
+          
+          <span>🏅</span>
+          <span>${badge}</span>
+        </div>
+      `)
+      .join("");
+      }
+      
+  renderBadges();
+
+  const pointsEl = document.getElementById("gamificationPoints");
+    if (pointsEl) {
+      pointsEl.textContent = gamification.points;
+    }
+
+    const levelEl = document.getElementById("gamificationLevel");
+    if (levelEl) {
+      levelEl.textContent = `Level ${gamification.level} — ${gamification.getLevelLabel()}`;
+    }
+
   /* -----------------------------------------
      6) NEXT TASKS LIST
   ----------------------------------------- */
   function updateNextTasks() {
     const upcoming = tasks
-      .filter(t => new Date(t.dueDate) >= today)
+      .filter(t => startOfDay(t.dueDate) >= startOfDay(today))
       .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
       .slice(0, 5);
 
