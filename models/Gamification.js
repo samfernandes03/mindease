@@ -50,23 +50,23 @@ export default class Gamification {
 
   updateBadges() {
     if (this.completedActivities >= 1) {
-      this.addBadge("First Activity");
+      this.addBadge("Primeira atividade");
     }
 
     if (this.completedActivities >= 5) {
-      this.addBadge("Well-being Explorer");
+      this.addBadge("Explorador do bem-estar");
     }
 
     if (this.focusSessions >= 3) {
-      this.addBadge("Focused Mind");
+      this.addBadge("Mente focada");
     }
 
     if (this.moodEntries >= 3) {
-      this.addBadge("Self-Awareness");
+      this.addBadge("Autoconhecimento");
     }
 
     if (this.points >= 100) {
-      this.addBadge("Early Consistency");
+      this.addBadge("Consistência inicial");
     }
   }
 
@@ -78,13 +78,13 @@ export default class Gamification {
 
   getLevelLabel() {
     const labels = {
-      1: "Beginner",
-      2: "Consistent",
-      3: "Focused",
-      4: "Well-Being Master"
+      1: "Iniciante",
+      2: "Consistente",
+      3: "Focado",
+      4: "Mestre do Bem-Estar"
     };
 
-    return labels[this.level] || "Beginner";
+    return labels[this.level] || "Iniciante";
   }
 
   getProgressToNextLevel() {
