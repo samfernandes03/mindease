@@ -3,6 +3,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import tasksRoutes from "./routes/tasks.js";
 import adminRoutes from "./routes/admin.js";
+import moodsRoutes from "./routes/moods.js";
 
 const app = express();
 const PORT = 4000;
@@ -14,6 +15,7 @@ app.use("/auth", authRoutes);
 app.use("/tasks", tasksRoutes);
 app.use("/admin", adminRoutes);
 
+app.use("/moods", moodsRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "MindEase Mock API running" });

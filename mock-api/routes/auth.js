@@ -30,10 +30,17 @@ router.post("/register", async (req, res) => {
     password: hashed,
     role: "user",
     photo: null,
+
+    avgMood: 0,
+    streak: 0,
+    tasks: 0,
+    activities: 0,
+
     preferences: {
       notifications: true,
       breakReminders: true
     },
+
     createdAt: new Date().toISOString()
   };
 
@@ -92,9 +99,17 @@ router.get("/me", authMiddleware, (req, res) => {
     email: user.email,
     role: user.role || "user",
     photo: user.photo,
+
+    avgMood: user.avgMood || 0,
+    streak: user.streak || 0,
+    tasks: user.tasks || 0,
+    activities: user.activities || 0,
+
     preferences: user.preferences
   });
 });
+
+
 
 router.put("/update", authMiddleware, (req, res) => {
   const db = readDB();
