@@ -86,8 +86,8 @@
 
     <!-- HEADER -->
     <div class="mb-10">
-      <h1 class="text-3xl font-bold text-gray-900">Perfil</h1>
-      <p class="text-gray-500 text-sm">Acompanha o teu progresso e objetivos</p>
+      <h1 class="text-3xl font-bold text-gray-900">Profile</h1>
+      <p class="text-gray-500 text-sm">Track your progress and goals</p>
     </div>
 
     <!-- GRID -->
@@ -107,7 +107,9 @@
             U
             </div>
 
-            <p class="text-xs text-indigo-600 underline cursor-pointer">Alterar foto</p>
+            <p class="text-xs text-indigo-600 underline cursor-pointer">
+                Change Photo
+              </p>
         </label>
 
         <input id="photoInput" type="file" accept="image/*" class="hidden">
@@ -115,36 +117,40 @@
         <h2 id="profileName" class="text-xl font-semibold text-gray-800 mt-2">User</h2>
         <p id="profileEmail" class="text-gray-500 text-sm mb-4">user@email.com</p>
 
-        <button id="openEdit" class="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition shadow">
-            Editar Perfil
+        <button id="openEdit"
+          class="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition shadow">
+          Edit Profile
         </button>
+
         </div>
 
 
       <!-- GENERAL STATS -->
       <div class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-        <h2 class="text-xl font-semibold text-gray-800 mb-6">Estatísticas Gerais</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-6">
+            General Statistics
+          </h2>
 
         <div class="grid grid-cols-2 gap-6">
 
           <div class="p-6 bg-indigo-50 rounded-2xl text-center shadow-sm">
             <p class="text-3xl font-bold text-indigo-700">7.1</p>
-            <p class="text-sm text-indigo-500 mt-1">Humor Médio</p>
+            <p class="text-sm text-indigo-500 mt-1">Average Humor</p>
           </div>
 
           <div class="p-6 bg-purple-50 rounded-2xl text-center shadow-sm">
             <p class="text-3xl font-bold text-purple-700">12</p>
-            <p class="text-sm text-purple-500 mt-1">Dias Consecutivos</p>
+            <p class="text-sm text-purple-500 mt-1">Consecutive Days</p>
           </div>
 
           <div class="p-6 bg-pink-50 rounded-2xl text-center shadow-sm">
             <p class="text-3xl font-bold text-pink-700">48</p>
-            <p class="text-sm text-pink-500 mt-1">Tarefas Completas</p>
+            <p class="text-sm text-pink-500 mt-1">Completed Tasks</p>
           </div>
 
           <div class="p-6 bg-blue-50 rounded-2xl text-center shadow-sm">
             <p class="text-3xl font-bold text-blue-700">23</p>
-            <p class="text-sm text-blue-500 mt-1">Atividades</p>
+            <p class="text-sm text-blue-500 mt-1">Activities</p>
           </div>
 
         </div>
@@ -155,15 +161,15 @@
     <!-- PREFERENCES -->
     <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm max-w-5xl w-full">
 
-      <h2 class="text-xl font-semibold text-gray-800 mb-6">Preferências</h2>
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">Preferences</h2>
 
       <div class="space-y-5">
 
         <!-- NOTIFICAÇÕES -->
         <div class="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition">
           <div>
-            <p class="font-medium text-gray-800">Notificações diárias</p>
-            <p class="text-sm text-gray-500">Recebe lembretes para manter o ritmo</p>
+            <p class="font-medium text-gray-800">Daily Notifications</p>
+            <p class="text-sm text-gray-500">Receive reminders to stay on track</p>
           </div>
 
           <label class="relative inline-flex items-center cursor-pointer">
@@ -176,8 +182,8 @@
         <!-- PAUSAS -->
         <div class="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition">
           <div>
-            <p class="font-medium text-gray-800">Lembretes de pausas</p>
-            <p class="text-sm text-gray-500">Sugestões para descansar ao longo do dia</p>
+            <p class="font-medium text-gray-800">Break Reminders</p>
+            <p class="text-sm text-gray-500">Suggestions for resting throughout the day</p>
           </div>
 
           <label class="relative inline-flex items-center cursor-pointer">
@@ -197,12 +203,12 @@
   <div id="editModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
     <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-xl">
 
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Editar Perfil</h2>
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Edit Profile</h2>
 
       <div class="space-y-4">
 
         <div>
-          <label class="text-sm text-gray-600">Nome</label>
+          <label class="text-sm text-gray-600">Name</label>
           <input id="editName" type="text" class="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none">
         </div>
 

@@ -86,20 +86,20 @@
   <main class="flex-1 ml-24 p-10">
 
     <div class="mb-10">
-      <h1 class="text-3xl font-bold text-gray-900">Modo Foco</h1>
-      <p class="text-gray-500 text-sm">Técnica Pomodoro adaptativa</p>
+      <h1 class="text-3xl font-bold text-gray-900">Focus Mode</h1>
+      <p class="text-gray-500 text-sm">Adaptive Pomodoro Technique</p>
     </div>
 
     <!-- MODOS -->
     <div class="flex gap-6 mb-10">
       <button id="modeLight" class="flex-1 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition text-left">
-        <h2 class="text-lg font-semibold text-gray-900">Foco Leve</h2>
-        <p class="text-gray-500 text-sm">25 min foco • 5 min pausa</p>
+        <h2 class="text-lg font-semibold text-gray-900">Light Focus</h2>
+        <p class="text-gray-500 text-sm">25 min focus • 5 min break</p>
       </button>
 
       <button id="modeDeep" class="flex-1 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition text-left">
-        <h2 class="text-lg font-semibold text-gray-900">Foco Profundo</h2>
-        <p class="text-gray-500 text-sm">50 min foco • 10 min pausa</p>
+        <h2 class="text-lg font-semibold text-gray-900">Deep Focus</h2>
+        <p class="text-gray-500 text-sm">50 min focus • 10 min break</p>
       </button>
     </div>
 
@@ -107,7 +107,7 @@
     <div class="bg-white border border-gray-200 rounded-3xl p-10 shadow-md max-w-xl mx-auto text-center">
 
       <h3 id="focusState" class="text-xl font-semibold text-indigo-600 mb-6">
-        Foco — Concentra-te
+        Focus — Concentrate
       </h3>
 
       <div id="timerDisplay" class="text-7xl font-bold text-gray-900 mb-10 tracking-tight">
@@ -150,21 +150,21 @@
 
     <!-- ESTATÍSTICAS -->
     <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm max-w-xl mx-auto">
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Estatísticas de Hoje</h2>
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Today's Statistics</h2>
 
       <div class="space-y-2 text-gray-700">
-        <p><strong>Minutos focados:</strong> <span id="statsMinutes">0</span> min</p>
-        <p><strong>Sessões concluídas:</strong> <span id="statsSessions">0</span></p>
-        <p><strong>Modo mais usado:</strong> <span id="statsMode">—</span></p>
+        <p><strong>Focused Minutes:</strong> <span id="statsMinutes">0</span> min</p>
+        <p><strong>Completed Sessions:</strong> <span id="statsSessions">0</span></p>
+        <p><strong>Most Used Mode:</strong> <span id="statsMode">—</span></p>
       </div>
     </div>
 
     <!-- HISTÓRICO -->
     <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm max-w-xl mx-auto">
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Histórico de Sessões</h2>
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Session History</h2>
 
       <div id="historyList" class="space-y-3 text-gray-700 text-sm">
-        <p class="text-gray-400">Nenhuma sessão registada ainda.</p>
+        <p class="text-gray-400">No sessions recorded yet.</p>
       </div>
     </div>
 
@@ -243,9 +243,9 @@
 
     const mostUsed =
       stats.modeCount.light > stats.modeCount.deep
-        ? "Foco Leve"
+        ? "Light Focus"
         : stats.modeCount.deep > stats.modeCount.light
-          ? "Foco Profundo"
+          ? "Deep Focus"
           : "—";
 
     document.getElementById("statsMode").textContent = mostUsed;
@@ -286,7 +286,7 @@
     const container = document.getElementById("historyList");
 
     if (history.length === 0) {
-      container.innerHTML = `<p class="text-gray-400">Nenhuma sessão registada ainda.</p>`;
+      container.innerHTML = `<p class="text-gray-400">No sessions recorded yet.</p>`;
       return;
     }
 
@@ -346,11 +346,11 @@
 
           isFocusPeriod = false;
           timeLeft = breakTime;
-          focusState.textContent = "Pausa — Respira um pouco";
+          focusState.textContent = "Break — Take a Moment to Breathe";
         } else {
           isFocusPeriod = true;
           timeLeft = focusTime;
-          focusState.textContent = "Foco — Concentra-te";
+          focusState.textContent = "Focus — Concentrate";
         }
 
         updateDisplay();
@@ -372,7 +372,7 @@
 
     isFocusPeriod = true;
     timeLeft = focusTime;
-    focusState.textContent = "Foco — Concentra-te";
+    focusState.textContent = "Focus — Concentrate";
 
     updateDisplay();
   }
@@ -396,7 +396,7 @@
 
     isFocusPeriod = true;
     timeLeft = focusTime;
-    focusState.textContent = "Foco — Concentra-te";
+    focusState.textContent = "Focus — Concentrate";
 
     modeLight.classList.toggle("ring-2", mode === "light");
     modeLight.classList.toggle("ring-indigo-400", mode === "light");
