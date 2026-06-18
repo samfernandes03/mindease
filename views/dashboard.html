@@ -122,10 +122,10 @@
 
       <!-- PERSONALIZED RECOMMENDATIONS -->
       <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Recomendações</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Personalized Recommendations</h2>
 
         <div id="recommendationsList" class="space-y-4">
-          <p class="text-sm text-gray-500">A carregar recomendações...</p>
+          <p class="text-sm text-gray-500">Loading recommendations...</p>
         </div>
       </div>
 
@@ -150,27 +150,27 @@
       </div>
 
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">Pontos</h3>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Points</h3>
         <p id="gamificationPoints" class="text-3xl font-bold text-purple-600">0</p>
-        <p id="gamificationLevel" class="text-sm text-gray-500 mt-1">Nível 1 — Iniciante</p>
+        <p id="gamificationLevel" class="text-sm text-gray-500 mt-1">Level 1 — Beginner</p>
       </div>
 
     </div>
 
     <!-- NOTIFICATIONS -->
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-10">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">Notificações</h3>
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Notifications</h3>
 
       <div id="notificationsList" class="space-y-3">
-        <p class="text-sm text-gray-500">Sem notificações no momento.</p>
+        <p class="text-sm text-gray-500">No notifications at the moment.</p>
       </div>
     </div>
 
     <!-- GAMIFICATION BADGES -->
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-10">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">Conquistas</h3>
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Achievements</h3>
       <div id="badgesList" class="flex flex-wrap gap-3">
-        <p class="text-sm text-gray-500">Ainda não tens conquistas desbloqueadas.</p>
+        <p class="text-sm text-gray-500">You haven't unlocked any achievements yet.</p>
       </div>
     </div>
 
@@ -187,10 +187,10 @@
 
     <!-- FAVORITE ACTIVITIES -->
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-10">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4">Atividades Favoritas</h3>
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Favorite Activities</h3>
 
       <div id="favoriteActivitiesList" class="space-y-4">
-        <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+        <p class="text-gray-500 text-sm">You don't have any favorite activities yet.</p>
       </div>
     </div>
 
@@ -261,14 +261,14 @@
   document.getElementById("gamificationPoints").textContent = gamification.points;
   document.getElementById(
     "gamificationLevel"
-  ).textContent = `Nível ${gamification.level} — ${gamification.getLevelLabel()}`;
+  ).textContent = `Level ${gamification.level} — ${gamification.getLevelLabel()}`;
 
   function renderBadges() {
     const badgesList = document.getElementById("badgesList");
 
     if (gamification.badges.length === 0) {
       badgesList.innerHTML = `
-        <p class="text-sm text-gray-500">Ainda não tens conquistas desbloqueadas.</p>
+        <p class="text-sm text-gray-500">You haven't unlocked any achievements yet.</p>
       `;
       return;
     }
@@ -316,7 +316,7 @@
 
     if (favorites.length === 0) {
       container.innerHTML = `
-        <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+        <p class="text-gray-500 text-sm">You don't have any favorite activities yet.</p>
       `;
       return;
     }
@@ -327,7 +327,7 @@
 
     if (favoriteActivities.length === 0) {
       container.innerHTML = `
-        <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+        <p class="text-gray-500 text-sm">You don't have any favorite activities yet.</p>
       `;
       return;
     }
@@ -341,7 +341,7 @@
           </div>
 
           <a href="./wellbeing.html" class="text-sm font-medium text-purple-700 hover:underline">
-            Abrir
+            Open
           </a>
         </div>
       `)
@@ -359,48 +359,48 @@
 
     if (gamification.moodEntries === 0) {
       recommendations.push({
-        title: "Regista o teu primeiro mood",
-        description: "Ajuda a aplicação a perceber melhor o teu estado emocional.",
+        title: "Register your first mood",
+        description: "Help the app understand your emotional state better.",
         link: "./mood.html"
       });
     }
 
     if (gamification.focusSessions === 0) {
       recommendations.push({
-        title: "Experimenta uma sessão de foco",
-        description: "O modo foco pode ajudar-te a organizar melhor o estudo.",
+        title: "Experiment a focus session",
+        description: "The focus mode can help you organize your study better.",
         link: "./focus.html"
       });
     }
 
     if (gamification.completedActivities === 0) {
       recommendations.push({
-        title: "Completa uma atividade de bem-estar",
-        description: "Começa por uma respiração guiada de poucos minutos.",
+        title: "Complete a wellbeing activity",
+        description: "Start with a guided breathing exercise for a few minutes.",
         link: "./wellbeing.html"
       });
     }
 
     if (gamification.moodEntries >= 3 && gamification.focusSessions < 2) {
       recommendations.push({
-        title: "Equilibra emoções com foco",
-        description: "Já tens vários registos emocionais. Experimenta agora uma sessão de foco.",
+        title: "Balance emotions with focus",
+        description: "You have several emotional entries. Try a focus session now.",
         link: "./focus.html"
       });
     }
 
     if (gamification.focusSessions >= 3 && gamification.completedActivities < 2) {
       recommendations.push({
-        title: "Faz uma pausa ativa",
-        description: "Como já tens usado o foco, experimenta alongamentos ou body scan.",
+        title: "Take an active break",
+        description: "Since you've been using the focus mode, try some stretching or a body scan.",
         link: "./wellbeing.html"
       });
     }
 
     if (recommendations.length === 0) {
       recommendations.push({
-        title: "Continua o teu progresso",
-        description: "Explora novas atividades e mantém o acompanhamento do teu bem-estar.",
+        title: "Continue your progress",
+        description: "Explore new activities and maintain your wellbeing tracking.",
         link: "./wellbeing.html"
       });
     }
@@ -426,19 +426,19 @@
     const notifications = [];
 
     if (gamification.points === 0) {
-      notifications.push("Começa por registar o teu mood ou concluir uma atividade para ganhares pontos.");
+      notifications.push("Start by registering your mood or completing an activity to earn points.");
     }
 
     if (gamification.moodEntries >= 3) {
-      notifications.push("Boa! Já fizeste vários registos emocionais. Continua a acompanhar o teu estado.");
+      notifications.push("Great! You've made several emotional entries. Keep tracking your state.");
     }
 
     if (gamification.focusSessions >= 3) {
-      notifications.push("Tens mantido boas sessões de foco. Continua assim!");
+      notifications.push("You've maintained good focus sessions. Keep it up!");
     }
 
     if (gamification.completedActivities >= 1) {
-      notifications.push("Já concluíste atividades de bem-estar. Explora novas técnicas para variar.");
+      notifications.push("You've completed wellbeing activities. Explore new techniques to vary.");
     }
 
     if (tasks.length > 0) {
@@ -447,12 +447,12 @@
       );
 
       if (overdueTasks.length > 0) {
-        notifications.push(`Tens ${overdueTasks.length} tarefa(s) em atraso. Tenta reorganizar o teu plano.`);
+        notifications.push(`You have ${overdueTasks.length} overdue task(s). Try reorganizing your plan.`);
       }
     }
 
     if (notifications.length === 0) {
-      notifications.push("Está tudo tranquilo por agora. Continua a cuidar do teu bem-estar.");
+      notifications.push("Everything is going well for now. Keep taking care of your wellbeing.");
     }
 
     container.innerHTML = notifications
