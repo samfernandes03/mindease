@@ -5,6 +5,7 @@
       "name": "Samuel Fernandes",
       "email": "samuel.pinho.fernandes@gmail.com",
       "password": "$2b$10$pcxC4.vHjDFgrQTBJN77KOeCmKbVh.Vylmres/x1wkgRKh7OFVcOC",
+      "role": "user",
       "photo": null,
       "preferences": {
         "notifications": true,
@@ -17,23 +18,48 @@
       "name": "Samuel Fernandes",
       "email": "sam.p.fernandes@gmail.com",
       "password": "$2b$10$vtxZpiSG3FUVua.VtwOvsuq2VD0uDjzRiY0Qqs7FVranBUVWyuMpe",
+      "role": "user",
       "photo": null,
       "preferences": {
         "notifications": true,
         "breakReminders": true
       },
       "createdAt": "2026-06-16T01:01:25.226Z"
+    },
+    {
+      "id": "5f4853ec-4a65-4303-969c-d914a55405ab",
+      "name": "José Silva",
+      "email": "40210276@esmad.ipp.pt",
+      "password": "$2a$10$3.7fRshuIddh.Y.TlAlzfONTsq24uCkzLI.cX6icRPY8.0dOj.12K",
+      "role": "admin",
+      "photo": null,
+      "preferences": {
+        "notifications": true,
+        "breakReminders": true
+      },
+      "createdAt": "2026-06-17T17:35:25.860Z"
     }
   ],
-  "tasks": [],
-  "moods": [
+  "tasks": [
     {
-      "id": "4c426ccc-8a0c-48e8-8ccb-3d56fa21246c",
+      "id": "b39c2d67-9f2c-426b-a341-6e96b537fb23",
       "userId": "be04b6cc-0f2f-480a-a06f-7c716e47cc55",
-      "mood": "Happy",
-      "score": 4,
-      "message": "It was a very productive day! I'm very happy",
-      "date": "2026-06-18T00:57:49.142Z"
+      "title": "Estudar Matemática",
+      "category": "Trabalho",
+      "mentalLoad": "High",
+      "energy": "High",
+      "dueDate": "2026-07-12",
+      "status": "Pending"
+    },
+    {
+      "id": "af4e609b-dbda-4b42-acbe-a9ab881e8e88",
+      "userId": "5f4853ec-4a65-4303-969c-d914a55405ab",
+      "title": "poo",
+      "category": "Cadeira",
+      "mentalLoad": "Medium",
+      "energy": "High",
+      "dueDate": "2026-06-18",
+      "status": "Pending"
     }
   ]
 }

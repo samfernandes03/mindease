@@ -1,11 +1,6 @@
 export function showToast(message, type = "success", duration = 3000) {
   const container = document.querySelector(".toast-container");
 
-  if (!container) {
-    console.warn("Toast container missing. Add <div class='toast-container'></div>");
-    return;
-  }
-
   const toast = document.createElement("div");
   toast.className = `toast toast-${type}`;
   toast.innerHTML = `

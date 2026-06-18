@@ -1,63 +1,85 @@
-module.exports = (sequelize, DataTypes) => {
-  const Task = sequelize.define("Task", {
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
-    },
+export default class Task {
+  constructor({
+    id = crypto.randomUUID(),
+    title,
+    category = "Geral",
+    mentalLoad = "Medium",
+    energy = "Medium",
+    dueDate = "",
+    status = "Pending",
+    userId = null,
+    createdAt = new Date().toISOString()
+  }) {
+    this.id = id;
+    this.title = title;
+    this.category = category;
+    this.mentalLoad = mentalLoad;
+    this.energy = energy;
+    this.dueDate = dueDate;
+    this.status = status;
+    this.userId = userId;
+    this.createdAt = createdAt;
+  }
 
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
+  markAsDone() {
+    this.status = "Done";
+  }
 
-    category: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
+  markAsPending() {
+    this.status = "Pending";
+  }
 
-    mentalLoad: {
-      type: DataTypes.ENUM("Low", "Medium", "High"),
-      allowNull: false
-    },
+  toggleStatus() {
+    this.status = this.status === "Done" ? "Pending" : "Done";
+  }
 
-    energy: {
-      type: DataTypes.ENUM("Low", "Medium", "High"),
-      allowNull: false
-    },
+  isDone() {
+    return this.status === "Done";
+  }
 
-    dueDate: {
-      type: DataTypes.DATEONLY,
-      allowNull: false
-    },
+  isPending() {
+    return this.status === "Pending";
+  }
 
-    status: {
-      type: DataTypes.ENUM("pending", "done"),
-      defaultValue: "pending"
-    },
+  isOverdue() {
+    if (!this.dueDate || this.isDone()) return false;
 
-    points: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
+    const today = new Date();
+    const due = new Date(this.dueDate);
 
-    // FK → child user who owns the task
-    childId: {
-      type: DataTypes.UUID,
-      allowNull: false
-    },
+    today.setHours(0, 0, 0, 0);
+    due.setHours(0, 0, 0, 0);
 
-    // FK → parent who created task
-    parentId: {
-      type: DataTypes.UUID,
-      allowNull: false
-    }
-  });
+    return due < today;
+  }
 
-  Task.associate = (models) => {
-    Task.belongsTo(models.User, { as: "child", foreignKey: "childId" });
-    Task.belongsTo(models.User, { as: "parent", foreignKey: "parentId" });
-  };
+  getStatusLabel() {
+    if (this.isDone()) return "Concluída";
+    if (this.isOverdue()) return "Atrasada";
+    return "Pendente";
+  }
 
-  return Task;
-};
+  getEnergyLabel() {
+    const labels = {
+      Low: "Baixa",
+      Medium: "Média",
+      High: "Alta"
+    };
+
+    return labels[this.energy] || this.energy;
+  }
+
+  getMentalLoadLabel() {
+    const labels = {
+      Low: "Baixa",
+      Medium: "Média",
+      High: "Alta"
+    };
+
+    return labels[this.mentalLoad] || this.mentalLoad;
+  }
+
+  getSummary() {
+    return `${this.title} — ${this.category} — ${this.getStatusLabel()}`;
+  }
+}
