@@ -167,6 +167,15 @@
       <div id="nextTasksList" class="space-y-4"></div>
     </div>
 
+        <!-- FAVORITE ACTIVITIES -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-10">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Atividades Favoritas</h3>
+
+      <div id="favoriteActivitiesList" class="space-y-4">
+        <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+      </div>
+    </div>
+
   </main>
 
 
@@ -174,8 +183,77 @@
   import { requireAuth } from "../assets/js/authGuard.js";
   import { logout } from "../assets/js/logout.js";
   import { apiGetAuth } from "../assets/js/api.js";
+  import { loadFavorites } from "../assets/js/favoritesService.js";
 
   window.logout = logout;
+
+    function normalizeDate(date) {
+      return new Date(date).toISOString().split("T")[0];
+  }
+
+  const wellbeingActivities = [
+  {
+    id: "diaphragmatic",
+    title: "Respiração Diafragmática",
+    description: "Exercício de respiração para reduzir ansiedade."
+  },
+  {
+    id: "bodyscan",
+    title: "Body Scan",
+    description: "Exercício de atenção ao corpo e relaxamento."
+  },
+  {
+    id: "grounding",
+    title: "Grounding 5-4-3-2-1",
+    description: "Técnica para recuperar foco no momento presente."
+  },
+  {
+    id: "stretching",
+    title: "Alongamento Suave",
+    description: "Movimentos leves para aliviar tensão física."
+  }
+];
+
+function renderFavoriteActivities() {
+  const favorites = loadFavorites(user.id);
+  const container = document.getElementById("favoriteActivitiesList");
+
+  if (!container) return;
+
+  if (favorites.length === 0) {
+    container.innerHTML = `
+      <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+    `;
+    return;
+  }
+
+  const favoriteActivities = wellbeingActivities.filter((activity) =>
+    favorites.includes(activity.id)
+  );
+
+  if (favoriteActivities.length === 0) {
+    container.innerHTML = `
+      <p class="text-gray-500 text-sm">Ainda não tens atividades favoritas.</p>
+    `;
+    return;
+  }
+
+  container.innerHTML = favoriteActivities
+    .map((activity) => `
+      <div class="p-4 bg-purple-50 border border-purple-100 rounded-xl flex justify-between items-center">
+        <div>
+          <p class="font-medium text-purple-700">${activity.title}</p>
+          <p class="text-sm text-purple-500">${activity.description}</p>
+        </div>
+
+        <a href="./wellbeing.html" class="text-sm font-medium text-purple-700 hover:underline">
+          Abrir
+        </a>
+      </div>
+    `)
+    .join("");
+}
+
 
   /* -----------------------------------------
      1) USER AUTH + PROFILE
@@ -228,12 +306,21 @@
      4) TASK STATS (Today / Overdue / Upcoming)
   ----------------------------------------- */
   function updateStats() {
-    const todayStr = today.toISOString().split("T")[0];
+    const todayStr = normalizeDate(new Date());
 
-    const todayTasks = tasks.filter(t => t.dueDate === todayStr);
-    const overdueTasks = tasks.filter(t => new Date(t.dueDate) < today && t.status !== "Done");
+    const todayTasks = tasks.filter(t =>
+      normalizeDate(t.dueDate) === todayStr
+    );
+
+    const overdueTasks = tasks.filter(t =>
+      normalizeDate(t.dueDate) < todayStr && t.status !== "Done"
+    );
+
     const upcomingTasks = tasks.filter(t => {
-      const diff = (new Date(t.dueDate) - today) / (1000 * 60 * 60 * 24);
+      const diff =
+        (new Date(t.dueDate) - new Date(todayStr)) /
+        (1000 * 60 * 60 * 24);
+
       return diff > 0 && diff <= 7;
     });
 
@@ -241,7 +328,6 @@
     document.getElementById("tasksOverdueCount").textContent = overdueTasks.length;
     document.getElementById("tasksUpcomingCount").textContent = upcomingTasks.length;
   }
-
   /* -----------------------------------------
      5) PROGRESS BAR
   ----------------------------------------- */
@@ -288,15 +374,26 @@
   /* -----------------------------------------
      7) MOOD CHART
   ----------------------------------------- */
+ let moodChart;
+
+async function loadMoodChart() {
+  const data = await apiGetAuth("/moods/chart", token);
+
+  const labels = data.map(d => d.day);
+  const values = data.map(d => d.avg);
+
+
   const ctx = document.getElementById('moodChart').getContext('2d');
 
-  new Chart(ctx, {
+  if (moodChart) moodChart.destroy(); // evita duplicação
+
+  moodChart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      labels,
       datasets: [{
         label: 'Mood',
-        data: [3, 4, 2, 5, 4, 3, 4],
+        data: values,
         borderColor: '#6366F1',
         backgroundColor: 'rgba(99, 102, 241, 0.2)',
         borderWidth: 3,
@@ -308,15 +405,41 @@
     },
     options: {
       scales: {
-        y: { min: 1, max: 5 }
+        y: { min: 1, max: 10 }
       }
     }
   });
+}
 
-  /* -----------------------------------------
-     8) INIT
-  ----------------------------------------- */
-  loadTasks();
+function safeSet(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
+async function loadMoodStats() {
+  const stats = await apiGetAuth("/moods/stats", token);
+
+  safeSet("avgMood", `${stats.average} / 10`);
+  safeSet("bestDay", stats.bestDay || "—");
+  safeSet("correlation", stats.correlation ?? 0);
+}
+
+window.addEventListener("focus", async () => {
+  const flag = localStorage.getItem("tasksUpdated");
+
+  if (flag === "true") {
+    localStorage.removeItem("tasksUpdated");
+
+    // só atualiza se necessário
+    await loadTasks();
+  }
+});
+
+
+  await loadTasks();
+  await loadMoodChart();
+  await loadMoodStats();
+  renderFavoriteActivities();
 </script>
 
 

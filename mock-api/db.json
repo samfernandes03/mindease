@@ -36,5 +36,15 @@
       "dueDate": "2026-07-12",
       "status": "Pending"
     }
+  ],
+  "moods": [
+    {
+      "id": "4c426ccc-8a0c-48e8-8ccb-3d56fa21246c",
+      "userId": "be04b6cc-0f2f-480a-a06f-7c716e47cc55",
+      "mood": "Happy",
+      "score": 4,
+      "message": "It was a very productive day! I'm very happy",
+      "date": "2026-06-18T00:57:49.142Z"
+    }
   ]
 }

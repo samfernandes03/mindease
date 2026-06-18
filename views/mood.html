@@ -156,18 +156,19 @@
 
         <div class="p-4 bg-indigo-50 rounded-xl">
           <p class="text-gray-500 text-sm">Average Mood</p>
-          <p class="text-2xl font-bold text-indigo-700">7.1 / 10</p>
+          <p id="avgMood" class="text-2xl font-bold text-indigo-700">0</p>
         </div>
 
         <div class="p-4 bg-purple-50 rounded-xl">
           <p class="text-gray-500 text-sm">Best Day</p>
-          <p class="text-2xl font-bold text-purple-700">Saturday</p>
+          <p id="bestDay" class="text-2xl font-bold text-purple-700">—</p>
         </div>
 
         <div class="p-4 bg-green-50 rounded-xl">
           <p class="text-gray-500 text-sm">Correlation</p>
-          <p class="text-2xl font-bold text-green-700">+0.85</p>
+          <p id="correlation" class="text-2xl font-bold text-green-700">0</p>
         </div>
+
       </div>
 
     </div>
@@ -178,60 +179,66 @@
 
     <div id="moodButtons" class="grid grid-cols-5 gap-6 text-center mb-6">
 
-        <!-- DISTRESSED -->
-        <button data-mood="Distressed" data-score="1"
-        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 17c-2 0-3.5-1.5-3.5-3.5"/>
-            <path d="M12 17c2 0 3.5-1.5 3.5-3.5"/>
-            <path d="M9 10h.01M15 10h.01"/>
+      <!-- DISTRESSED -->
+      <button data-mood="Distressed" data-score="1"
+      class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-10 h-10 text-red-600" 
+            fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M15.182 15.182a4.5 4.5 0 0 0-6.364 0M9.75 9.75h.008v.008H9.75V9.75Zm4.5 0h.008v.008h-.008V9.75ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
         <p class="text-sm font-medium text-gray-700">Distressed</p>
-        </button>
+      </button>
 
-        <!-- SAD -->
-        <button data-mood="Sad" data-score="2"
-        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M9 10h.01M15 10h.01"/>
-            <path d="M8 16c1.5-1 6.5-1 8 0"/>
+      <!-- SAD -->
+      <button data-mood="Sad" data-score="2"
+      class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-10 h-10 text-orange-500" 
+            fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M15.182 15.182a4.5 4.5 0 0 0-6.364 0M9.75 9.75h.008v.008H9.75V9.75Zm4.5 0h.008v.008h-.008V9.75ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
         <p class="text-sm font-medium text-gray-700">Sad</p>
-        </button>
+      </button>
 
-        <!-- NEUTRAL -->
-        <button data-mood="Neutral" data-score="3"
-        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M9 10h.01M15 10h.01"/>
-            <line x1="8" y1="15" x2="16" y2="15"/>
+      <!-- NEUTRAL -->
+      <button data-mood="Neutral" data-score="3"
+      class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-10 h-10 text-gray-500" 
+            fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M9.75 9.75h.008v.008H9.75V9.75Zm4.5 0h.008v.008h-.008V9.75ZM8 15h8M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
         <p class="text-sm font-medium text-gray-700">Neutral</p>
-        </button>
+      </button>
 
-        <!-- HAPPY -->
-        <button data-mood="Happy" data-score="4"
-        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M9 10h.01M15 10h.01"/>
-            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+      <!-- HAPPY -->
+      <button data-mood="Happy" data-score="4"
+      class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-10 h-10 text-green-500" 
+            fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M9.75 9.75h.008v.008H9.75V9.75Zm4.5 0h.008v.008h-.008V9.75ZM8 14s1.5 2 4 2 4-2 4-2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
         <p class="text-sm font-medium text-gray-700">Happy</p>
-        </button>
+      </button>
 
-        <!-- GREAT -->
-        <button data-mood="Great" data-score="5"
-        class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/>
-            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      <!-- GREAT -->
+      <button data-mood="Great" data-score="5"
+      class="mood-btn flex flex-col items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            class="w-10 h-10 text-yellow-500" 
+            fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364-1.414 1.414M7.05 16.95l-1.414 1.414m12.728 0-1.414-1.414M7.05 7.05 5.636 5.636M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z" />
         </svg>
         <p class="text-sm font-medium text-gray-700">Great</p>
-        </button>
+      </button>
+
 
     </div>
 
@@ -297,191 +304,199 @@
 
   </main>
 
-  <!-- CHART SCRIPT -->
-  <script>
+  <script type="module">
     import { requireAuth } from "../assets/js/authGuard.js";
-    requireAuth();
-    
-    const ctx = document.getElementById('moodChart').getContext('2d');
+    import { apiGetAuth, apiPostAuth, apiPutAuth, apiDeleteAuth } from "../assets/js/api.js";
 
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-          label: 'Mood',
-          data: [6, 7, 5, 8, 7, 9, 7],
-          borderColor: '#6366F1',
-          backgroundColor: 'rgba(99, 102, 241, 0.2)',
-          borderWidth: 3,
-          tension: 0.4,
-          fill: true,
-          pointRadius: 5,
-          pointBackgroundColor: '#6366F1'
-        }]
-      },
-      options: {
-        scales: {
-          y: { min: 1, max: 10 }
-        }
-      }
-    });
+    await requireAuth();
+    const token = localStorage.getItem("token");
 
-    // Auto-activate sidebar icon based on current page
-    const currentPage = window.location.pathname.split("/").pop();
+    let moodLogs = [];
+    let editingId = null;
 
-    document.querySelectorAll("aside a").forEach(link => {
-        const href = link.getAttribute("href");
-
-        if (href && href.includes(currentPage)) {
-        const iconWrapper = link.querySelector("div");
-        if (iconWrapper) {
-            iconWrapper.classList.add("sidebar-active");
-        }
-        }
-    });
-
-  /* -------------------------
-     LOCAL STORAGE DATA
-  ------------------------- */
-  let moodLogs = JSON.parse(localStorage.getItem("moodLogs") || "[]");
-  let editingIndex = null;
-
-    // Mood selection logic (THIS WAS MISSING)
-  document.querySelectorAll(".mood-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      // Remove previous selection
-      document.querySelectorAll(".mood-btn").forEach(b => {
-        b.classList.remove("selected");
-      });
-
-      // Add selection to clicked mood
-      btn.classList.add("selected");
-    });
-  });
-
-  /* -------------------------
-     SAVE NEW MOOD
-  ------------------------- */
-  function saveMood() {
-    const selected = document.querySelector(".mood-btn.selected");
-    if (!selected) {
-      alert("Please select a mood");
-      return;
+    /* -----------------------------------------
+        LOAD MOODS FROM BACKEND
+    ----------------------------------------- */
+    async function loadMoods() {
+      moodLogs = await apiGetAuth("/moods", token);
+      renderMoodHistory();
     }
 
-    const entry = {
-      mood: selected.dataset.mood,
-      score: Number(selected.dataset.score),
-      message: document.getElementById("moodMessage").value,
-      date: new Date().toLocaleString()
+    /* -----------------------------------------
+        LOAD REAL STATS
+    ----------------------------------------- */
+    async function loadStats() {
+      const stats = await apiGetAuth("/moods/stats", token);
+
+      document.getElementById("avgMood").textContent = `${stats.average} / 10`;
+      document.getElementById("bestDay").textContent = stats.bestDay || "—";
+      document.getElementById("correlation").textContent = stats.correlation;
+    }
+
+    /* -----------------------------------------
+        LOAD REAL CHART DATA
+    ----------------------------------------- */
+    async function loadChart() {
+      const data = await apiGetAuth("/moods/chart", token);
+
+      const labels = data.map(d => d.day);
+      const values = data.map(d => d.avg);
+
+      const ctx = document.getElementById('moodChart').getContext('2d');
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Mood',
+            data: values,
+            borderColor: '#6366F1',
+            backgroundColor: 'rgba(99, 102, 241, 0.2)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 5,
+            pointBackgroundColor: '#6366F1'
+          }]
+        },
+        options: {
+          scales: {
+            y: { min: 1, max: 10 }
+          }
+        }
+      });
+    }
+
+    /* -----------------------------------------
+        MOOD SELECTION
+    ----------------------------------------- */
+    document.querySelectorAll(".mood-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".mood-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+      });
+    });
+
+    /* -----------------------------------------
+        SAVE NEW MOOD (BACKEND)
+    ----------------------------------------- */
+    window.saveMood = async function () {
+      const selected = document.querySelector(".mood-btn.selected");
+      if (!selected) {
+        alert("Please select a mood");
+        return;
+      }
+
+      const entry = {
+        mood: selected.dataset.mood,
+        score: Number(selected.dataset.score),
+        message: document.getElementById("moodMessage").value
+      };
+
+      await apiPostAuth("/moods", entry, token);
+
+      document.getElementById("moodMessage").value = "";
+      selected.classList.remove("selected");
+
+      await loadMoods();
+      await loadStats();
+      await loadChart();
     };
 
-    moodLogs.push(entry);
-    localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
+    /* -----------------------------------------
+        RENDER HISTORY
+    ----------------------------------------- */
+    function renderMoodHistory() {
+      const container = document.getElementById("moodHistory");
 
-    document.getElementById("moodMessage").value = "";
-    selected.classList.remove("selected");
+      if (!moodLogs.length) {
+        container.innerHTML = `<p class="text-gray-500 text-sm">No moods registered yet.</p>`;
+        return;
+      }
 
-    renderMoodHistory();
-  }
+      container.innerHTML = moodLogs.map(entry => `
+        <div class="mood-entry p-4 border rounded-xl bg-gray-50 flex justify-between items-start">
+          <div>
+            <p class="font-semibold text-gray-800">${entry.mood}
+              <span class="text-xs text-gray-500 ml-2">${new Date(entry.date).toLocaleString()}</span>
+            </p>
+            <p class="text-gray-600 mt-1">${entry.message || "<i>No message</i>"}</p>
+          </div>
 
-  /* -------------------------
-     RENDER HISTORY
-  ------------------------- */
-  function renderMoodHistory() {
-    const container = document.getElementById("moodHistory");
-
-    if (!moodLogs.length) {
-      container.innerHTML = `<p class="text-gray-500 text-sm">No moods registered yet.</p>`;
-      return;
+          <div class="flex gap-3">
+            <button onclick="editMood('${entry.id}')" class="text-indigo-600 font-medium text-sm">Edit</button>
+            <button onclick="deleteMood('${entry.id}')" class="text-red-600 font-medium text-sm">Delete</button>
+          </div>
+        </div>
+      `).join("");
     }
 
-    container.innerHTML = moodLogs.map((entry, index) => `
-      <div class="mood-entry p-4 border rounded-xl bg-gray-50 flex justify-between items-start">
-        
-        <div>
-          <p class="font-semibold text-gray-800">${entry.mood}
-            <span class="text-xs text-gray-500 ml-2">${entry.date}</span>
-          </p>
-          <p class="text-gray-600 mt-1">${entry.message || "<i>No message</i>"}</p>
-        </div>
+    /* -----------------------------------------
+        DELETE MOOD (BACKEND)
+    ----------------------------------------- */
+    window.deleteMood = async function (id) {
+      await apiDeleteAuth(`/moods/${id}`, token);
+      await loadMoods();
+      await loadStats();
+      await loadChart();
+    };
 
-        <div class="flex gap-3">
-          <button onclick="editMood(${index})" class="text-indigo-600 font-medium text-sm">Edit</button>
-          <button onclick="deleteMood(${index})" class="text-red-600 font-medium text-sm">Delete</button>
-        </div>
+    /* -----------------------------------------
+        OPEN EDIT MODAL
+    ----------------------------------------- */
+    window.editMood = function (id) {
+      editingId = id;
+      const entry = moodLogs.find(m => m.id === id);
 
-      </div>
-    `).join("");
-  }
+      document.getElementById("editMoodSelect").value = entry.mood;
+      document.getElementById("editMoodMessage").value = entry.message;
 
-  /* -------------------------
-     DELETE ENTRY
-  ------------------------- */
-  function deleteMood(index) {
-    moodLogs.splice(index, 1);
-    localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
-    renderMoodHistory();
-  }
+      const modal = document.getElementById("editMoodModal");
+      modal.classList.remove("hidden");
 
-  /* -------------------------
-     OPEN EDIT MODAL
-  ------------------------- */
-  function editMood(index) {
-    editingIndex = index;
-    const entry = moodLogs[index];
+      setTimeout(() => modal.classList.add("show"), 10);
+    };
 
-    document.getElementById("editMoodSelect").value = entry.mood;
-    document.getElementById("editMoodMessage").value = entry.message;
+    /* -----------------------------------------
+        SAVE EDITED MOOD (BACKEND)
+    ----------------------------------------- */
+    window.saveEditedMood = async function () {
+      const updated = {
+        mood: document.getElementById("editMoodSelect").value,
+        message: document.getElementById("editMoodMessage").value
+      };
 
-    const modal = document.getElementById("editMoodModal");
-    modal.classList.remove("hidden");
+      await apiPutAuth(`/moods/${editingId}`, updated, token);
 
-    setTimeout(() => modal.classList.add("show"), 10);
-  }
+      closeEditModal();
+      await loadMoods();
+      await loadStats();
+      await loadChart();
+    };
 
-  /* -------------------------
-     CLOSE EDIT MODAL
-  ------------------------- */
-  function closeEditModal() {
-    const modal = document.getElementById("editMoodModal");
-    modal.classList.remove("show");
+    /* -----------------------------------------
+        CLOSE EDIT MODAL
+    ----------------------------------------- */
+    window.closeEditModal = function () {
+      const modal = document.getElementById("editMoodModal");
+      modal.classList.remove("show");
 
-    setTimeout(() => modal.classList.add("hidden"), 150);
-  }
+      setTimeout(() => modal.classList.add("hidden"), 150);
+    };
 
-  /* -------------------------
-     SAVE EDITED ENTRY
-  ------------------------- */
-  function saveEditedMood() {
-    const newMood = document.getElementById("editMoodSelect").value;
-    const newMessage = document.getElementById("editMoodMessage").value;
+    document.getElementById("editMoodModal").addEventListener("click", (e) => {
+      if (e.target.id === "editMoodModal") closeEditModal();
+    });
 
-    moodLogs[editingIndex].mood = newMood;
-    moodLogs[editingIndex].message = newMessage;
+    /* -----------------------------------------
+        INIT
+    ----------------------------------------- */
+    await loadMoods();
+    await loadStats();
+    await loadChart();
+  </script>
 
-    localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
-
-    closeEditModal();
-    renderMoodHistory();
-  }
-
-  /* -------------------------
-     CLOSE MODAL ON BACKDROP CLICK
-  ------------------------- */
-  document.getElementById("editMoodModal").addEventListener("click", (e) => {
-    if (e.target.id === "editMoodModal") closeEditModal();
-  });
-
-  /* -------------------------
-     INITIAL RENDER
-  ------------------------- */
-  renderMoodHistory();
-
-
-</script>
 
 </body>
 </html>

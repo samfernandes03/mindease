@@ -466,9 +466,12 @@
         await apiPostAuth("/tasks", newTask, token);
     }
 
+    localStorage.setItem("tasksUpdated", "true");
+
     closeTaskModal();
     loadTasks();
     });
+
 
     /* -----------------------------
     FILTER LISTENERS
@@ -482,6 +485,26 @@
     loadTasks();
 
     document.getElementById("sortTasks").addEventListener("change", renderTasks);
+
+        window.deleteTask = async function(id) {
+        await apiDeleteAuth(`/tasks/${id}`, token);
+        localStorage.setItem("tasksUpdated", "true");
+        loadTasks();
+        };
+
+        window.toggleStatus = async function(id) {
+            const task = tasks.find(t => t.id === id);
+            if (!task) return;
+
+            const updated = {
+                status: task.status === "Done" ? "Pending" : "Done"
+            };
+
+            await apiPutAuth(`/tasks/${id}`, updated, token);
+
+            localStorage.setItem("tasksUpdated", "true");
+            loadTasks();
+            };
 
     </script>
     

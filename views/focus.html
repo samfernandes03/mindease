@@ -171,7 +171,7 @@
   </main>
 
   <!-- SCRIPT -->
-  <script>
+  <script type="module">
     import { requireAuth } from "../assets/js/authGuard.js";
     requireAuth();
     
@@ -241,59 +241,6 @@
       loadStats();
       loadHistory();
     }
-
-// -----------------------------
-// ESTATÍSTICAS + HISTÓRICO (GUARDADOS NO LOCALSTORAGE)
-// -----------------------------
-
-function loadStats() {
-  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-    minutes: 0,
-    sessions: 0,
-    modeCount: { light: 0, deep: 0 }
-  };
-
-  document.getElementById("statsMinutes").textContent = stats.minutes;
-  document.getElementById("statsSessions").textContent = stats.sessions;
-
-  const mostUsed =
-    stats.modeCount.light > stats.modeCount.deep ? "Foco Leve" :
-    stats.modeCount.deep > stats.modeCount.light ? "Foco Profundo" :
-    "—";
-
-  document.getElementById("statsMode").textContent = mostUsed;
-}
-
-function saveSession(duration, mode) {
-  // --- ESTATÍSTICAS ---
-  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-    minutes: 0,
-    sessions: 0,
-    modeCount: { light: 0, deep: 0 }
-  };
-
-  stats.minutes += duration;
-  stats.sessions += 1;
-  stats.modeCount[mode]++;
-
-  localStorage.setItem("focusStats", JSON.stringify(stats));
-
-  // --- HISTÓRICO ---
-  const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
-  const now = new Date();
-
-  history.unshift({
-    time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    duration,
-    mode,
-    date: now.toLocaleDateString()
-  });
-
-  localStorage.setItem("focusHistory", JSON.stringify(history));
-
-  loadStats();
-  loadHistory();
-}
 
     function loadHistory() {
       const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
@@ -406,59 +353,6 @@ function saveSession(duration, mode) {
     loadStats();
     loadHistory();
     updateDisplay();
-
-    // -----------------------------
-// ESTATÍSTICAS + HISTÓRICO (GUARDADOS NO LOCALSTORAGE)
-// -----------------------------
-
-function loadStats() {
-  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-    minutes: 0,
-    sessions: 0,
-    modeCount: { light: 0, deep: 0 }
-  };
-
-  document.getElementById("statsMinutes").textContent = stats.minutes;
-  document.getElementById("statsSessions").textContent = stats.sessions;
-
-  const mostUsed =
-    stats.modeCount.light > stats.modeCount.deep ? "Foco Leve" :
-    stats.modeCount.deep > stats.modeCount.light ? "Foco Profundo" :
-    "—";
-
-  document.getElementById("statsMode").textContent = mostUsed;
-}
-
-function saveSession(duration, mode) {
-  // --- ESTATÍSTICAS ---
-  const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-    minutes: 0,
-    sessions: 0,
-    modeCount: { light: 0, deep: 0 }
-  };
-
-  stats.minutes += duration;
-  stats.sessions += 1;
-  stats.modeCount[mode]++;
-
-  localStorage.setItem("focusStats", JSON.stringify(stats));
-
-  // --- HISTÓRICO ---
-  const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
-  const now = new Date();
-
-  history.unshift({
-    time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    duration,
-    mode,
-    date: now.toLocaleDateString()
-  });
-
-  localStorage.setItem("focusHistory", JSON.stringify(history));
-
-  loadStats();
-  loadHistory();
-}
 
 
   </script>
