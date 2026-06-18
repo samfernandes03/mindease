@@ -101,6 +101,10 @@
 <script type="module">
   import { apiPost } from "../assets/js/api.js";
   import { showToast } from "../assets/js/toasts.js";
+  import { togglePassword } from "../assets/js/ui.js";
+
+  window.togglePassword = togglePassword;
+  
 
   document.getElementById("registerForm").addEventListener("submit", async e => {
     e.preventDefault();

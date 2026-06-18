@@ -82,37 +82,37 @@
   </aside>
 
 
-      <!-- MAIN CONTENT -->
-      <main class="flex-1 ml-24 p-10">
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 ml-24 p-10">
 
-        <div class="mb-10">
-          <h1 class="text-3xl font-bold text-gray-900">Focus Mode</h1>
-          <p class="text-gray-500 text-sm">Adaptive Pomodoro technique</p>
-        </div>
+    <div class="mb-10">
+      <h1 class="text-3xl font-bold text-gray-900">Modo Foco</h1>
+      <p class="text-gray-500 text-sm">Técnica Pomodoro adaptativa</p>
+    </div>
 
-        <!-- MODES -->
-        <div class="flex gap-6 mb-10">
-          <button id="modeLight" class="flex-1 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition text-left">
-            <h2 class="text-lg font-semibold text-gray-900">Light Focus</h2>
-            <p class="text-gray-500 text-sm">25 min focus • 5 min break</p>
-          </button>
+    <!-- MODOS -->
+    <div class="flex gap-6 mb-10">
+      <button id="modeLight" class="flex-1 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition text-left">
+        <h2 class="text-lg font-semibold text-gray-900">Foco Leve</h2>
+        <p class="text-gray-500 text-sm">25 min foco • 5 min pausa</p>
+      </button>
 
-          <button id="modeDeep" class="flex-1 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition text-left">
-            <h2 class="text-lg font-semibold text-gray-900">Deep Focus</h2>
-            <p class="text-gray-500 text-sm">50 min focus • 10 min break</p>
-          </button>
-        </div>
+      <button id="modeDeep" class="flex-1 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition text-left">
+        <h2 class="text-lg font-semibold text-gray-900">Foco Profundo</h2>
+        <p class="text-gray-500 text-sm">50 min foco • 10 min pausa</p>
+      </button>
+    </div>
 
-        <!-- TIMER -->
-        <div class="bg-white border border-gray-200 rounded-3xl p-10 shadow-md max-w-xl mx-auto text-center">
+    <!-- TIMER -->
+    <div class="bg-white border border-gray-200 rounded-3xl p-10 shadow-md max-w-xl mx-auto text-center">
 
-          <h3 id="focusState" class="text-xl font-semibold text-indigo-600 mb-6">
-            Focus — Stay Concentrated
-          </h3>
+      <h3 id="focusState" class="text-xl font-semibold text-indigo-600 mb-6">
+        Foco — Concentra-te
+      </h3>
 
-          <div id="timerDisplay" class="text-7xl font-bold text-gray-900 mb-10 tracking-tight">
-            25:00
-          </div>
+      <div id="timerDisplay" class="text-7xl font-bold text-gray-900 mb-10 tracking-tight">
+        25:00
+      </div>
 
       <div class="flex justify-center gap-8">
 
@@ -148,214 +148,282 @@
 
     </div>
 
-    <!-- STATISTICS -->
+    <!-- ESTATÍSTICAS -->
     <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm max-w-xl mx-auto">
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Today’s Statistics</h2>
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Estatísticas de Hoje</h2>
 
       <div class="space-y-2 text-gray-700">
-        <p><strong>Focused minutes:</strong> <span id="statsMinutes">0</span> min</p>
-        <p><strong>Completed sessions:</strong> <span id="statsSessions">0</span></p>
-        <p><strong>Most used mode:</strong> <span id="statsMode">—</span></p>
+        <p><strong>Minutos focados:</strong> <span id="statsMinutes">0</span> min</p>
+        <p><strong>Sessões concluídas:</strong> <span id="statsSessions">0</span></p>
+        <p><strong>Modo mais usado:</strong> <span id="statsMode">—</span></p>
       </div>
     </div>
 
-    <!-- HISTORY -->
+    <!-- HISTÓRICO -->
     <div class="mt-10 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm max-w-xl mx-auto">
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Session History</h2>
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Histórico de Sessões</h2>
 
       <div id="historyList" class="space-y-3 text-gray-700 text-sm">
-        <p class="text-gray-400">No sessions recorded yet.</p>
+        <p class="text-gray-400">Nenhuma sessão registada ainda.</p>
       </div>
     </div>
 
   </main>
 
-  <script type="module">
-    import { requireAuth } from "../assets/js/authGuard.js";
-    requireAuth();
+  <!-- SCRIPT -->
+<script type="module">
+  import { requireAuth } from "../assets/js/authGuard.js";
+  import { logout } from "../assets/js/logout.js";
+  import FocusSession from "../models/FocusSession.js";
+  import { addFocusPoints } from "../assets/js/gamificationService.js";
 
-    let mode = "light";
-    let focusTime = 25 * 60;
-    let breakTime = 5 * 60;
-    let timeLeft = focusTime;
-    let interval = null;
-    let isRunning = false;
+  const user = await requireAuth();
+  window.logout = logout;
 
-    const timerDisplay = document.getElementById("timerDisplay");
-    const focusState = document.getElementById("focusState");
+  // -----------------------------
+  // VARIÁVEIS DO TIMER
+  // -----------------------------
 
-    function updateDisplay() {
-      const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
-      const s = (timeLeft % 60).toString().padStart(2, "0");
-      timerDisplay.textContent = `${m}:${s}`;
-    }
+  let mode = "light";
+  let focusTime = 25 * 60;
+  let breakTime = 5 * 60;
+  let timeLeft = focusTime;
+  let interval = null;
+  let isRunning = false;
+  let isFocusPeriod = true;
 
-    // -----------------------------
-    // STATS + HISTORY
-    // -----------------------------
+  const focusStatsKey = `focusStats_${user.id}`;
+  const focusHistoryKey = `focusHistory_${user.id}`;
 
-    function loadStats() {
-      const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-        minutes: 0,
-        sessions: 0,
-        modeCount: { light: 0, deep: 0 }
-      };
+  // -----------------------------
+  // ELEMENTOS DO DOM
+  // -----------------------------
 
-      document.getElementById("statsMinutes").textContent = stats.minutes;
-      document.getElementById("statsSessions").textContent = stats.sessions;
+  const timerDisplay = document.getElementById("timerDisplay");
+  const focusState = document.getElementById("focusState");
+  const playBtn = document.getElementById("playBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const modeLight = document.getElementById("modeLight");
+  const modeDeep = document.getElementById("modeDeep");
+  const playIcon = document.getElementById("playIcon");
+  const pauseIcon = document.getElementById("pauseIcon");
 
-      const mostUsed =
-        stats.modeCount.light > stats.modeCount.deep ? "Light Focus" :
-        stats.modeCount.deep > stats.modeCount.light ? "Deep Focus" :
-        "—";
+  // -----------------------------
+  // ATUALIZAR DISPLAY DO TIMER
+  // -----------------------------
 
-      document.getElementById("statsMode").textContent = mostUsed;
-    }
+  function updateDisplay() {
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+    const s = (timeLeft % 60).toString().padStart(2, "0");
 
-    function saveSession(duration, mode) {
-      const stats = JSON.parse(localStorage.getItem("focusStats")) || {
-        minutes: 0,
-        sessions: 0,
-        modeCount: { light: 0, deep: 0 }
-      };
+    timerDisplay.textContent = `${m}:${s}`;
+  }
 
-      stats.minutes += duration;
-      stats.sessions += 1;
-      stats.modeCount[mode]++;
+  // -----------------------------
+  // ESTATÍSTICAS + HISTÓRICO
+  // GUARDADOS NO LOCALSTORAGE
+  // -----------------------------
 
-      localStorage.setItem("focusStats", JSON.stringify(stats));
-
-      const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
-      const now = new Date();
-
-      history.unshift({
-        time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        duration,
-        mode,
-        date: now.toLocaleDateString()
-      });
-
-      localStorage.setItem("focusHistory", JSON.stringify(history));
-
-      loadStats();
-      loadHistory();
-    }
-
-    function loadHistory() {
-      const history = JSON.parse(localStorage.getItem("focusHistory")) || [];
-      const container = document.getElementById("historyList");
-
-      if (history.length === 0) {
-        container.innerHTML = `<p class="text-gray-400">No sessions recorded yet.</p>`;
-        return;
+  function getDefaultStats() {
+    return {
+      minutes: 0,
+      sessions: 0,
+      modeCount: {
+        light: 0,
+        deep: 0
       }
-
-      container.innerHTML = history
-        .map(item => `
-          <div class="p-3 border border-gray-200 rounded-xl">
-            <p>
-              <strong>${item.time}</strong> — ${item.duration} min — 
-              ${item.mode === "light" ? "Light Focus" : "Deep Focus"}
-            </p>
-          </div>
-        `)
-        .join("");
-    }
-
-    // -----------------------------
-    // TIMER
-    // -----------------------------
-
-    function togglePlayPause() {
-      const playIcon = document.getElementById("playIcon");
-      const pauseIcon = document.getElementById("pauseIcon");
-
-      if (isRunning) {
-        clearInterval(interval);
-        isRunning = false;
-        playIcon.classList.remove("hidden");
-        pauseIcon.classList.add("hidden");
-        return;
-      }
-
-      isRunning = true;
-      playIcon.classList.add("hidden");
-      pauseIcon.classList.remove("hidden");
-
-      interval = setInterval(() => {
-        timeLeft--;
-        updateDisplay();
-
-        if (timeLeft <= 0) {
-          clearInterval(interval);
-          isRunning = false;
-
-          const duration = focusState.textContent.includes("Focus")
-            ? focusTime / 60
-            : breakTime / 60;
-
-          saveSession(duration, mode);
-
-          if (focusState.textContent.includes("Focus")) {
-            focusState.textContent = "Break — Take a breath";
-            timeLeft = breakTime;
-          } else {
-            focusState.textContent = "Focus — Stay concentrated";
-            timeLeft = focusTime;
-          }
-
-          togglePlayPause();
-        }
-      }, 1000);
-    }
-
-    document.getElementById("playBtn").onclick = togglePlayPause;
-
-    document.getElementById("resetBtn").onclick = () => {
-      clearInterval(interval);
-      isRunning = false;
-      timeLeft = focusTime;
-      focusState.textContent = "Focus — Stay concentrated";
-
-      document.getElementById("playIcon").classList.remove("hidden");
-      document.getElementById("pauseIcon").classList.add("hidden");
-
-      updateDisplay();
     };
+  }
 
-    document.getElementById("modeLight").onclick = () => {
-      mode = "light";
-      focusTime = 25 * 60;
-      breakTime = 5 * 60;
-      timeLeft = focusTime;
-      isRunning = false;
+  function loadStats() {
+    const stats = JSON.parse(localStorage.getItem(focusStatsKey)) || getDefaultStats();
 
-      document.getElementById("playIcon").classList.remove("hidden");
-      document.getElementById("pauseIcon").classList.add("hidden");
+    document.getElementById("statsMinutes").textContent = stats.minutes;
+    document.getElementById("statsSessions").textContent = stats.sessions;
 
-      focusState.textContent = "Focus — Stay concentrated";
-      updateDisplay();
-    };
+    const mostUsed =
+      stats.modeCount.light > stats.modeCount.deep
+        ? "Foco Leve"
+        : stats.modeCount.deep > stats.modeCount.light
+          ? "Foco Profundo"
+          : "—";
 
-    document.getElementById("modeDeep").onclick = () => {
-      mode = "deep";
-      focusTime = 50 * 60;
-      breakTime = 10 * 60;
-      timeLeft = focusTime;
-      isRunning = false;
+    document.getElementById("statsMode").textContent = mostUsed;
+  }
 
-      document.getElementById("playIcon").classList.remove("hidden");
-      document.getElementById("pauseIcon").classList.add("hidden");
+  function saveSession(duration, currentMode) {
+    // --- ESTATÍSTICAS ---
+    const stats = JSON.parse(localStorage.getItem(focusStatsKey)) || getDefaultStats();
 
-      focusState.textContent = "Focus — Stay concentrated";
-      updateDisplay();
-    };
+    stats.minutes += duration;
+    stats.sessions += 1;
+    stats.modeCount[currentMode] += 1;
+
+    localStorage.setItem(focusStatsKey, JSON.stringify(stats));
+
+    // --- HISTÓRICO ---
+    const history = JSON.parse(localStorage.getItem(focusHistoryKey)) || [];
+
+    const session = new FocusSession({
+      mode: currentMode,
+      duration,
+      breakDuration: breakTime / 60,
+      completed: true,
+      userId: user.id
+    });
+
+    history.unshift(session);
+
+    localStorage.setItem(focusHistoryKey, JSON.stringify(history));
 
     loadStats();
     loadHistory();
-    updateDisplay();
+  }
 
-  </script>
+  function loadHistory() {
+    const history = (JSON.parse(localStorage.getItem(focusHistoryKey)) || [])
+      .map((item) => new FocusSession(item));
+    const container = document.getElementById("historyList");
+
+    if (history.length === 0) {
+      container.innerHTML = `<p class="text-gray-400">Nenhuma sessão registada ainda.</p>`;
+      return;
+    }
+
+    container.innerHTML = history
+      .map((item) => `
+        <div class="p-3 border border-gray-200 rounded-xl">
+          <p>
+            <strong>${item.getFormattedTime()}</strong> — ${item.duration} min — 
+            ${item.getModeLabel()}
+          </p>
+          <p class="text-xs text-gray-400">${item.getFormattedDate()}</p>
+        </div>
+      `)
+      .join("");
+  }
+
+  // -----------------------------
+  // ÍCONES DO BOTÃO PLAY / PAUSE
+  // -----------------------------
+
+  function showPlayIcon() {
+    playIcon.classList.remove("hidden");
+    pauseIcon.classList.add("hidden");
+  }
+
+  function showPauseIcon() {
+    playIcon.classList.add("hidden");
+    pauseIcon.classList.remove("hidden");
+  }
+
+  // -----------------------------
+  // TIMER
+  // -----------------------------
+
+  function stopTimer() {
+    clearInterval(interval);
+    interval = null;
+    isRunning = false;
+    showPlayIcon();
+  }
+
+  function startTimer() {
+    isRunning = true;
+    showPauseIcon();
+
+    interval = setInterval(() => {
+      timeLeft -= 1;
+      updateDisplay();
+
+      if (timeLeft <= 0) {
+        stopTimer();
+
+        if (isFocusPeriod) {
+          // Guarda apenas sessões de foco completas
+          saveSession(focusTime / 60, mode);
+          addFocusPoints(user.id);
+
+          isFocusPeriod = false;
+          timeLeft = breakTime;
+          focusState.textContent = "Pausa — Respira um pouco";
+        } else {
+          isFocusPeriod = true;
+          timeLeft = focusTime;
+          focusState.textContent = "Foco — Concentra-te";
+        }
+
+        updateDisplay();
+      }
+    }, 1000);
+  }
+
+  function togglePlayPause() {
+    if (isRunning) {
+      stopTimer();
+      return;
+    }
+
+    startTimer();
+  }
+
+  function resetTimer() {
+    stopTimer();
+
+    isFocusPeriod = true;
+    timeLeft = focusTime;
+    focusState.textContent = "Foco — Concentra-te";
+
+    updateDisplay();
+  }
+
+  // -----------------------------
+  // MODOS DE FOCO
+  // -----------------------------
+
+  function changeMode(newMode) {
+    stopTimer();
+
+    mode = newMode;
+
+    if (mode === "light") {
+      focusTime = 25 * 60;
+      breakTime = 5 * 60;
+    } else {
+      focusTime = 50 * 60;
+      breakTime = 10 * 60;
+    }
+
+    isFocusPeriod = true;
+    timeLeft = focusTime;
+    focusState.textContent = "Foco — Concentra-te";
+
+    modeLight.classList.toggle("ring-2", mode === "light");
+    modeLight.classList.toggle("ring-indigo-400", mode === "light");
+
+    modeDeep.classList.toggle("ring-2", mode === "deep");
+    modeDeep.classList.toggle("ring-indigo-400", mode === "deep");
+
+    updateDisplay();
+  }
+
+  // -----------------------------
+  // EVENTOS
+  // -----------------------------
+
+  playBtn.addEventListener("click", togglePlayPause);
+  resetBtn.addEventListener("click", resetTimer);
+  modeLight.addEventListener("click", () => changeMode("light"));
+  modeDeep.addEventListener("click", () => changeMode("deep"));
+
+  // -----------------------------
+  // INICIALIZAÇÃO DA PÁGINA
+  // -----------------------------
+
+  loadStats();
+  loadHistory();
+  updateDisplay();
+</script>
 
 </body>
 </html>

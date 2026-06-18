@@ -251,7 +251,11 @@
     <script type="module">
     import { requireAuth } from "../assets/js/authGuard.js";
     import { apiGetAuth, apiPostAuth, apiPutAuth, apiDeleteAuth } from "../assets/js/api.js";
+    import { logout } from "../assets/js/logout.js";
+    import Task from "../models/Task.js";
 
+    window.logout = logout;
+    
     const user = await requireAuth();
     const token = localStorage.getItem("token");
 
@@ -262,7 +266,10 @@
     LOAD TASKS
     ----------------------------- */
     async function loadTasks() {
-    tasks = await apiGetAuth("/tasks", token);
+    const data = await apiGetAuth("/tasks", token);
+
+    tasks = data.map((task) => new Task(task));
+
     populateCategories();
     renderTasks();
     }
@@ -281,7 +288,7 @@
     /* -----------------------------
     RENDER TASKS (with filters)
     ----------------------------- */
- function renderTasks() {
+    function renderTasks() {
     const container = document.querySelector(".space-y-6");
 
     // FILTER VALUES
@@ -313,7 +320,7 @@
         }
 
         if (dateFilter === "overdue") {
-        return new Date(task.dueDate) < today;
+        return task.isOverdue();
         }
 
         return true;
@@ -435,14 +442,12 @@
     TOGGLE STATUS
     ----------------------------- */
     window.toggleStatus = async function(id) {
-    const task = tasks.find(t => t.id === id);
+    const task = tasks.find((t) => t.id === id);
     if (!task) return;
 
-    const updated = {
-        status: task.status === "Done" ? "Pending" : "Done"
-    };
+    task.toggleStatus();
 
-    await apiPutAuth(`/tasks/${id}`, updated, token);
+    await apiPutAuth(`/tasks/${id}`, { status: task.status }, token);
     loadTasks();
     };
 
@@ -452,26 +457,31 @@
     document.getElementById("taskForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const newTask = {
+    const newTask = new Task({
         title: document.getElementById("title").value,
         category: document.getElementById("category").value,
         mentalLoad: document.getElementById("mentalLoad").value,
         energy: document.getElementById("energy").value,
-        dueDate: document.getElementById("dueDate").value
-    };
+        dueDate: document.getElementById("dueDate").value,
+        status: "Pending",
+        userId: user.id
+    });
 
     if (editTaskId) {
-        await apiPutAuth(`/tasks/${editTaskId}`, newTask, token);
+        await apiPutAuth(`/tasks/${editTaskId}`, {
+            title: newTask.title,
+            category: newTask.category,
+            mentalLoad: newTask.mentalLoad,
+            energy: newTask.energy,
+            dueDate: newTask.dueDate
+        }, token);
     } else {
         await apiPostAuth("/tasks", newTask, token);
     }
 
-    localStorage.setItem("tasksUpdated", "true");
-
     closeTaskModal();
     loadTasks();
     });
-
 
     /* -----------------------------
     FILTER LISTENERS
@@ -485,26 +495,6 @@
     loadTasks();
 
     document.getElementById("sortTasks").addEventListener("change", renderTasks);
-
-        window.deleteTask = async function(id) {
-        await apiDeleteAuth(`/tasks/${id}`, token);
-        localStorage.setItem("tasksUpdated", "true");
-        loadTasks();
-        };
-
-        window.toggleStatus = async function(id) {
-            const task = tasks.find(t => t.id === id);
-            if (!task) return;
-
-            const updated = {
-                status: task.status === "Done" ? "Pending" : "Done"
-            };
-
-            await apiPutAuth(`/tasks/${id}`, updated, token);
-
-            localStorage.setItem("tasksUpdated", "true");
-            loadTasks();
-            };
 
     </script>
     

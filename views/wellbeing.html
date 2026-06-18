@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MindEase — Well‑Being Activities</title>
+  <title>MindEase — Well-Being Activities</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -12,18 +12,21 @@
     .sidebar-active {
       background-color: #4f46e5;
     }
+
     .sidebar-active svg {
       color: #eef2ff !important;
       opacity: 1 !important;
     }
 
-    /* Breathing circle animation (we’ll control via JS) */
+    /* Breathing circle animation */
     .breathing-circle {
       transition: transform 1s ease-in-out;
     }
+
     .breathing-circle.inhale {
       transform: scale(1.15);
     }
+
     .breathing-circle.exhale {
       transform: scale(0.9);
     }
@@ -64,27 +67,26 @@
 
     <!-- WELLNESS / ZEN ICON -->
     <a href="./wellbeing.html" class="group">
-    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
         <svg xmlns="http://www.w3.org/2000/svg" 
-            class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
-            fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-        <path d="M12 22s8-4 8-10-8-10-8-10-8 4-8 10 8 10 8 10z"/>
+             class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+             fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path d="M12 22s8-4 8-10-8-10-8-10-8 4-8 10 8 10 8 10z"/>
         </svg>
-    </div>
+      </div>
     </a>
 
-
-  <!-- FOCUS ICON -->
-  <a href="./focus.html" class="group">
-    <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
-      <svg xmlns="http://www.w3.org/2000/svg" 
-          class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
-          fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-        <circle cx="12" cy="12" r="8"/>
-        <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
-      </svg>
-    </div>
-  </a>
+    <!-- FOCUS ICON -->
+    <a href="./focus.html" class="group">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-200 flex items-center justify-center shadow-sm hover:bg-indigo-300 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             class="w-7 h-7 text-indigo-700 opacity-80 group-hover:opacity-100 transition" 
+             fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <circle cx="12" cy="12" r="8"/>
+          <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+        </svg>
+      </div>
+    </a>
 
     <!-- LOGOUT -->
     <button onclick="logout()" class="group mt-auto mb-4">
@@ -104,177 +106,165 @@
 
     <!-- HEADER -->
     <div class="mb-10">
-      <h1 class="text-3xl font-bold text-gray-900">Well‑Being Activities</h1>
-      <p class="text-gray-500 text-sm">Evidence‑based practices to reduce stress and anxiety</p>
+      <h1 class="text-3xl font-bold text-gray-900">Well-Being Activities</h1>
+      <p class="text-gray-500 text-sm">Evidence-based practices to reduce stress and anxiety</p>
     </div>
 
     <!-- ACTIVITIES GRID -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
 
-        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm 
-                    hover:shadow-md hover:-translate-y-1 transition cursor-pointer group">
+      <!-- ACTIVITY 1: DIAPHRAGMATIC BREATHING -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer group">
 
         <!-- ICON + TITLE -->
         <div class="flex items-center gap-4 mb-5">
-            <div class="w-16 h-16 rounded-2xl bg-indigo-50 flex items-center justify-center 
-                        group-hover:bg-indigo-100 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    class="w-10 h-10 text-indigo-600" 
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 3v7"/>
-                <path d="M9 10c-2 0-4 1.5-4 4v4"/>
-                <path d="M15 10c2 0 4 1.5 4 4v4"/>
-                <path d="M9 10v4a3 3 0 0 0 3 3"/>
-                <path d="M15 10v4a3 3 0 0 1-3 3"/>
-                </svg>
+          <div class="w-16 h-16 rounded-2xl bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-100 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 class="w-10 h-10 text-indigo-600" 
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3v7"/>
+              <path d="M9 10c-2 0-4 1.5-4 4v4"/>
+              <path d="M15 10c2 0 4 1.5 4 4v4"/>
+              <path d="M9 10v4a3 3 0 0 0 3 3"/>
+              <path d="M15 10v4a3 3 0 0 1-3 3"/>
+            </svg>
+          </div>
 
-            </div>
-
-            <div>
+          <div>
             <h2 class="text-lg font-semibold text-gray-900 leading-tight">Diaphragmatic Breathing</h2>
             <p class="text-gray-500 text-sm">Breathe deeply and calm your mind.</p>
-            </div>
+          </div>
         </div>
 
         <!-- DURATION -->
         <p class="text-indigo-600 font-semibold text-sm mb-5">Duration: 5 min</p>
 
-        <!-- BUTTON -->
-        <button onclick="openExercise('diaphragmatic')" 
-                class="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition">
-            Start
-        </button>
-
+        <!-- FAVORITE BUTTON -->
         <button
           id="favorite-diaphragmatic"
           onclick="toggleActivityFavorite('diaphragmatic')"
-          class="mt-3 px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-700 transition">
-          ♡ Favorite
+          class="mb-3 px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-700 transition">
+          ♡ Favorito
         </button>
 
-        </div>
+        <!-- START BUTTON -->
+        <button onclick="openExercise('diaphragmatic')" 
+                class="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition">
+          Start
+        </button>
 
-
+      </div>
 
       <!-- ACTIVITY 2: BODY SCAN -->
-        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm 
-                    hover:shadow-md hover:-translate-y-1 transition cursor-pointer group">
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer group">
 
         <div class="flex items-center gap-4 mb-5">
-            <div class="w-16 h-16 rounded-2xl bg-purple-50 flex items-center justify-center 
-                        group-hover:bg-purple-100 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    class="w-10 h-10 text-purple-600" 
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="4.5" r="2.5"/>
-                <path d="M10 7h4l1.5 4.5-1.5 3.5v5h-2v-4l-1.5-3.5L10 7z"/>
-                </svg>
+          <div class="w-16 h-16 rounded-2xl bg-purple-50 flex items-center justify-center group-hover:bg-purple-100 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 class="w-10 h-10 text-purple-600" 
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="4.5" r="2.5"/>
+              <path d="M10 7h4l1.5 4.5-1.5 3.5v5h-2v-4l-1.5-3.5L10 7z"/>
+            </svg>
+          </div>
 
-            </div>
-
-            <div>
+          <div>
             <h2 class="text-lg font-semibold text-gray-900 leading-tight">Body Scan</h2>
             <p class="text-gray-500 text-sm">Observe the sensations in your body.</p>
-            </div>
+          </div>
         </div>
 
         <p class="text-purple-600 font-semibold text-sm mb-5">Duration: 10 min</p>
 
-        <button onclick="openExercise('bodyscan')" 
-                class="px-4 py-2 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition">
-            Start
-        </button>
-
+        <!-- FAVORITE BUTTON -->
         <button
           id="favorite-bodyscan"
           onclick="toggleActivityFavorite('bodyscan')"
-          class="mt-3 px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-700 transition">
-          ♡ Favorite
+          class="mb-3 px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-700 transition">
+          ♡ Favorito
         </button>
 
-        </div>
+        <button onclick="openExercise('bodyscan')" 
+                class="px-4 py-2 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition">
+          Start
+        </button>
 
+      </div>
 
       <!-- ACTIVITY 3: GROUNDING -->
-        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm 
-                    hover:shadow-md hover:-translate-y-1 transition cursor-pointer group">
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer group">
 
         <div class="flex items-center gap-4 mb-5">
-            <div class="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center 
-                        group-hover:bg-emerald-100 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    class="w-10 h-10 text-emerald-600" 
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M2 12s3-5 10-5 10 5 10 5-3 5-10 5S2 12 2 12z"/>
-                <circle cx="12" cy="12" r="2.5"/>
-                </svg>
+          <div class="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center group-hover:bg-emerald-100 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 class="w-10 h-10 text-emerald-600" 
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 12s3-5 10-5 10 5 10 5-3 5-10 5S2 12 2 12z"/>
+              <circle cx="12" cy="12" r="2.5"/>
+            </svg>
+          </div>
 
-            </div>
-
-            <div>
-            <h2 class="text-lg font-semibold text-gray-900 leading-tight">5‑4‑3‑2‑1 Grounding</h2>
+          <div>
+            <h2 class="text-lg font-semibold text-gray-900 leading-tight">5-4-3-2-1 Grounding</h2>
             <p class="text-gray-500 text-sm">Reconnect with the present moment.</p>
-            </div>
+          </div>
         </div>
 
         <p class="text-emerald-600 font-semibold text-sm mb-5">Duration: 7 min</p>
 
-        <button onclick="openExercise('grounding')" 
-                class="px-4 py-2 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition">
-            Start
-        </button>
-
+        <!-- FAVORITE BUTTON -->
         <button
           id="favorite-grounding"
           onclick="toggleActivityFavorite('grounding')"
-          class="mt-3 px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:text-emerald-700 transition">
-          ♡ Favorite
+          class="mb-3 px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-700 transition">
+          ♡ Favorito
         </button>
 
-        </div>
+        <button onclick="openExercise('grounding')" 
+                class="px-4 py-2 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition">
+          Start
+        </button>
 
-
+      </div>
 
       <!-- ACTIVITY 4: STRETCHING -->
-        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm 
-                    hover:shadow-md hover:-translate-y-1 transition cursor-pointer group">
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer group">
 
         <div class="flex items-center gap-4 mb-5">
-            <div class="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center 
-                        group-hover:bg-amber-100 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    class="w-10 h-10 text-amber-600" 
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="5" r="2"/>
-                <path d="M10 7l-2 4 2 2v7"/>
-                <path d="M14 7l2 4-2 2v7"/>
-                </svg>
+          <div class="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center group-hover:bg-amber-100 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 class="w-10 h-10 text-amber-600" 
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="5" r="2"/>
+              <path d="M10 7l-2 4 2 2v7"/>
+              <path d="M14 7l2 4-2 2v7"/>
+            </svg>
+          </div>
 
-            </div>
-
-            <div>
-            <h2 class="text-lg font-semibold text-gray-900 leading-tight">Anti‑Stress Stretching</h2>
+          <div>
+            <h2 class="text-lg font-semibold text-gray-900 leading-tight">Anti-Stress Stretching</h2>
             <p class="text-gray-500 text-sm">Release tension from your body.</p>
-            </div>
+          </div>
         </div>
 
         <p class="text-amber-600 font-semibold text-sm mb-5">Duration: 12 min</p>
 
-        <button onclick="openExercise('stretching')" 
-                class="px-4 py-2 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition">
-            Start
-        </button>
-
+        <!-- FAVORITE BUTTON -->
         <button
           id="favorite-stretching"
           onclick="toggleActivityFavorite('stretching')"
-          class="mt-3 px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition">
-          ♡ Favorite
+          class="mb-3 px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-700 transition">
+          ♡ Favorito
         </button>
 
-        </div>
+        <button onclick="openExercise('stretching')" 
+                class="px-4 py-2 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition">
+          Start
+        </button>
 
+      </div>
 
+    </div>
 
   </main>
 
@@ -295,39 +285,35 @@
       <div id="exerciseContent" class="space-y-4"></div>
 
       <!-- Footer -->
-      <div class="flex justify-between items-center mt-6 gap-3">
+      <div class="flex justify-between items-center mt-6">
         <p id="exerciseHint" class="text-xs text-gray-400"></p>
-        <button id="completeBtn"
+
+        <div class="flex gap-3">
+          <button
             onclick="completeActivity()"
-            class="px-4 py-2 rounded-xl bg-green-500 text-white hover:bg-green-600 transition">
-            Complete
-        </button>
-        <button onclick="closeExercise()" class="px-4 py-2 rounded-xl border text-gray-700 hover:bg-gray-100 transition">
-          Close
-        </button>
+            class="px-4 py-2 rounded-xl bg-purple-500 text-white hover:bg-purple-600 transition">
+            Concluir atividade
+          </button>
+
+          <button onclick="closeExercise()" class="px-4 py-2 rounded-xl border text-gray-700 hover:bg-gray-100 transition">
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="toast-container fixed top-5 right-5 z-50 space-y-3"></div>
-
   <script type="module">
-
-    console.log("SCRIPT INICIOU");
-    
     import { requireAuth } from "../assets/js/authGuard.js";
+    import { logout } from "../assets/js/logout.js";
     import {
       toggleFavorite,
       isFavorite
     } from "../assets/js/favoritesService.js";
-
     import { addActivityPoints } from "../assets/js/gamificationService.js";
-    import { showToast } from "../assets/js/toasts.js";
 
     const user = await requireAuth();
-
-    let currentActivityId = null;
-    let completedActivities = new Set();
+    window.logout = logout;
     
     // Sidebar active
     const currentPage = window.location.pathname.split("/").pop();
@@ -341,171 +327,168 @@
 
     let breathingInterval = null;
     let currentStepIndex = 0;
+    let currentActivityId = null;
 
     function openExercise(type) {
       currentActivityId = type;
+
       const modal = document.getElementById("exerciseModal");
       const card = document.getElementById("exerciseCard");
       const title = document.getElementById("exerciseTitle");
       const subtitle = document.getElementById("exerciseSubtitle");
       const content = document.getElementById("exerciseContent");
       const hint = document.getElementById("exerciseHint");
-      
 
       clearInterval(breathingInterval);
       breathingInterval = null;
       currentStepIndex = 0;
       content.innerHTML = "";
 
-        if (type === "diaphragmatic") {
-            title.textContent = "Diaphragmatic Breathing";
-            subtitle.textContent = "Follow the guided breathing rhythm.";
-            hint.textContent = "Recommended: 5 minutes, but even 1–2 cycles help.";
+      if (type === "diaphragmatic") {
+        title.textContent = "Diaphragmatic Breathing";
+        subtitle.textContent = "Follow the guided breathing rhythm.";
+        hint.textContent = "Recommended: 5 minutes, but even 1–2 cycles help.";
 
-            content.innerHTML = `
-                <div class="flex flex-col items-center gap-10 py-6">
+        content.innerHTML = `
+          <div class="flex flex-col items-center gap-10 py-6">
 
-                <div class="relative flex items-center justify-center">
+            <div class="relative flex items-center justify-center">
 
-                <div id="breathingOrb"
-                    class="w-32 h-32 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600
-                            shadow-[0_0_50px_rgba(99,102,241,0.45)]
-                            transition-all duration-[4000ms] ease-in-out
-                            flex items-center justify-center scale-100 translate-y-0">
+              <div id="breathingOrb"
+                   class="w-32 h-32 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600
+                          shadow-[0_0_50px_rgba(99,102,241,0.45)]
+                          transition-all duration-[4000ms] ease-in-out
+                          flex items-center justify-center scale-100 translate-y-0">
 
+                <div class="absolute inset-0 rounded-full bg-white opacity-20 blur-2xl"></div>
 
-                    <div class="absolute inset-0 rounded-full bg-white opacity-20 blur-2xl"></div>
+                <span id="breathingText"
+                      class="text-white font-semibold text-2xl tracking-wide drop-shadow">
+                  Get ready…
+                </span>
+              </div>
 
-                    <span id="breathingText"
-                            class="text-white font-semibold text-2xl tracking-wide drop-shadow">
-                        Get ready…
-                    </span>
-                    </div>
+              <div id="breathingWave"
+                   class="absolute w-32 h-32 rounded-full border-2 border-indigo-300 opacity-0
+                          scale-100 transition-all duration-[4000ms] ease-out">
+              </div>
 
-                    <div id="breathingWave"
-                        class="absolute w-32 h-32 rounded-full border-2 border-indigo-300 opacity-0
-                                scale-100 transition-all duration-[4000ms] ease-out">
-                    </div>
+            </div>
 
+            <p class="text-gray-600 text-center text-sm leading-relaxed max-w-xs">
+              Follow the orb as it expands, glows, and rises.  
+              Breathe deeply into your belly.
+            </p>
 
-                </div>
+            <p class="text-xs text-gray-400">Cycle: Inhale 4s • Hold 2s • Exhale 6s</p>
 
-                <p class="text-gray-600 text-center text-sm leading-relaxed max-w-xs">
-                    Follow the orb as it expands, glows, and rises.  
-                    Breathe deeply into your belly.
-                </p>
+          </div>
+        `;
 
-                <p class="text-xs text-gray-400">Cycle: Inhale 4s • Hold 2s • Exhale 6s</p>
+        const orb = document.getElementById("breathingOrb");
+        const wave = document.getElementById("breathingWave");
+        const textEl = document.getElementById("breathingText");
 
-                </div>
-            `;
+        const phases = [
+          { label: "Inhale", duration: 4000, scale: "scale-[1.35]", lift: "-translate-y-3", wave: true },
+          { label: "Hold", duration: 2000, scale: "scale-[1.35]", lift: "-translate-y-1", wave: false },
+          { label: "Exhale", duration: 6000, scale: "scale-[0.80]", lift: "translate-y-2", wave: false }
+        ];
 
-            const orb = document.getElementById("breathingOrb");
-            const wave = document.getElementById("breathingWave");
-            const textEl = document.getElementById("breathingText");
+        let idx = 0;
 
-            const phases = [
-                { label: "Inhale", duration: 4000, scale: "scale-[1.35]", lift: "-translate-y-3", wave: true },
-                { label: "Hold", duration: 2000, scale: "scale-[1.35]", lift: "-translate-y-1", wave: false },
-                { label: "Exhale", duration: 6000, scale: "scale-[0.80]", lift: "translate-y-2", wave: false }
-            ];
+        function runPhase() {
+          const p = phases[idx];
 
-            let idx = 0;
+          textEl.textContent = p.label;
 
-            function runPhase() {
-                const p = phases[idx];
+          orb.classList.remove(
+            "scale-[1.35]", "scale-[0.80]",
+            "-translate-y-3", "-translate-y-1", "translate-y-2"
+          );
+          orb.classList.add(p.scale, p.lift);
 
-                textEl.textContent = p.label;
+          if (p.wave) {
+            wave.classList.remove("opacity-0", "scale-[1.0]");
+            wave.classList.add("opacity-40", "scale-[2.4]");
 
-                orb.classList.remove(
-                "scale-[1.35]", "scale-[0.80]",
-                "-translate-y-3", "-translate-y-1", "translate-y-2"
-                );
-                orb.classList.add(p.scale, p.lift);
+            setTimeout(() => {
+              wave.classList.remove("opacity-40", "scale-[2.4]");
+              wave.classList.add("opacity-0", "scale-[1.0]");
+            }, p.duration - 300);
+          }
 
-                if (p.wave) {
-                wave.classList.remove("opacity-0", "scale-[1.0]");
-                wave.classList.add("opacity-40", "scale-[2.4]");
-
-                setTimeout(() => {
-                    wave.classList.remove("opacity-40", "scale-[2.4]");
-                    wave.classList.add("opacity-0", "scale-[1.0]");
-                }, p.duration - 300);
-                }
-
-                setTimeout(() => {
-                idx = (idx + 1) % phases.length;
-                if (breathingInterval !== null) runPhase();
-                }, p.duration);
-            }
+          setTimeout(() => {
+            idx = (idx + 1) % phases.length;
+            if (breathingInterval !== null) runPhase();
+          }, p.duration);
+        }
 
         breathingInterval = true;
         runPhase();
 
-
-
-        } else if (type === "bodyscan") {
+      } else if (type === "bodyscan") {
         title.textContent = "Body Scan";
         subtitle.textContent = "Move your attention slowly through your body.";
         hint.textContent = "Choose a mode to adjust duration and pacing.";
 
         // MODE DEFINITIONS
         const modes = {
-            regular: {
+          regular: {
             label: "Regular",
-            duration: 10 * 60, // 10 min
+            duration: 10 * 60,
             steps: [
-                "Notice the contact of your body with the chair or bed.",
-                "Bring attention to your feet — sensations, temperature, pressure.",
-                "Move up to your legs — calves, knees, thighs.",
-                "Notice your abdomen and chest — how the breath moves your body.",
-                "Bring awareness to your hands, arms, shoulders, and neck.",
-                "Notice your face — jaw, eyes, forehead, scalp.",
-                "Take one deep breath and feel your whole body as one field."
+              "Notice the contact of your body with the chair or bed.",
+              "Bring attention to your feet — sensations, temperature, pressure.",
+              "Move up to your legs — calves, knees, thighs.",
+              "Notice your abdomen and chest — how the breath moves your body.",
+              "Bring awareness to your hands, arms, shoulders, and neck.",
+              "Notice your face — jaw, eyes, forehead, scalp.",
+              "Take one deep breath and feel your whole body as one field."
             ]
-            },
+          },
 
-            short: {
+          short: {
             label: "Short",
-            duration: 5 * 60, // 5 min
+            duration: 5 * 60,
             steps: [
-                "Notice the contact of your body with the chair or bed.",
-                "Bring attention to your feet.",
-                "Move up to your legs.",
-                "Take one deep breath and feel your whole body."
+              "Notice the contact of your body with the chair or bed.",
+              "Bring attention to your feet.",
+              "Move up to your legs.",
+              "Take one deep breath and feel your whole body."
             ]
-            },
+          },
 
-            slow: {
+          slow: {
             label: "Slow",
-            duration: 16 * 60, // 16 min
+            duration: 16 * 60,
             steps: [
-                "Notice the contact of your body with the chair or bed.",
-                "Bring attention to your feet — stay here for a moment.",
-                "Move slowly up to your legs — calves, knees, thighs.",
-                "Notice your abdomen and chest — follow the breath.",
-                "Bring awareness to your hands, arms, shoulders, and neck.",
-                "Notice your face — jaw, eyes, forehead, scalp.",
-                "Take a long, slow breath and feel your whole body."
+              "Notice the contact of your body with the chair or bed.",
+              "Bring attention to your feet — stay here for a moment.",
+              "Move slowly up to your legs — calves, knees, thighs.",
+              "Notice your abdomen and chest — follow the breath.",
+              "Bring awareness to your hands, arms, shoulders, and neck.",
+              "Notice your face — jaw, eyes, forehead, scalp.",
+              "Take a long, slow breath and feel your whole body."
             ]
-            },
+          },
 
-            extended: {
+          extended: {
             label: "Extended",
-            duration: 20 * 60, // 20 min
+            duration: 20 * 60,
             steps: [
-                "Notice the contact of your body with the chair or bed.",
-                "Bring attention to your feet.",
-                "Move up to your legs.",
-                "Notice your abdomen.",
-                "Notice your chest.",
-                "Bring awareness to your hands.",
-                "Bring awareness to your arms and shoulders.",
-                "Notice your neck.",
-                "Notice your face.",
-                "Take one deep breath and feel your whole body."
+              "Notice the contact of your body with the chair or bed.",
+              "Bring attention to your feet.",
+              "Move up to your legs.",
+              "Notice your abdomen.",
+              "Notice your chest.",
+              "Bring awareness to your hands.",
+              "Bring awareness to your arms and shoulders.",
+              "Notice your neck.",
+              "Notice your face.",
+              "Take one deep breath and feel your whole body."
             ]
-            }
+          }
         };
 
         // DEFAULT MODE
@@ -515,94 +498,94 @@
 
         // TIME PER STEP
         function getStepDuration() {
-            return currentMode.duration / steps.length * 1000;
+          return currentMode.duration / steps.length * 1000;
         }
 
         content.innerHTML = `
-            <div class="space-y-6">
+          <div class="space-y-6">
 
             <!-- Mode Display -->
             <p id="modeLabel" class="text-sm text-purple-600 font-semibold">
-                Mode: ${currentMode.label} (${currentMode.duration / 60} min)
+              Mode: ${currentMode.label} (${currentMode.duration / 60} min)
             </p>
 
             <!-- Step text -->
             <div class="flex items-start gap-4">
-                <div class="flex flex-col items-center">
+              <div class="flex flex-col items-center">
                 <div id="scanDot"
-                    class="w-4 h-4 rounded-full bg-purple-500 transition-all"></div>
+                     class="w-4 h-4 rounded-full bg-purple-500 transition-all"></div>
                 <div class="w-0.5 flex-1 bg-gray-200 mt-1"></div>
-                </div>
+              </div>
 
-                <p id="bodyScanText"
-                class="text-gray-700 text-base leading-relaxed transition-opacity duration-300">
+              <p id="bodyScanText"
+                 class="text-gray-700 text-base leading-relaxed transition-opacity duration-300">
                 ${steps[0]}
-                </p>
+              </p>
             </div>
 
             <!-- Progress bar -->
             <div class="w-full bg-gray-100 rounded-full h-2">
-                <div id="bodyScanProgress"
-                    class="bg-purple-500 h-2 rounded-full transition-all"
-                    style="width: ${(1/steps.length)*100}%"></div>
+              <div id="bodyScanProgress"
+                   class="bg-purple-500 h-2 rounded-full transition-all"
+                   style="width: ${(1/steps.length)*100}%"></div>
             </div>
 
             <!-- Step label -->
             <p id="bodyScanStepLabel"
-                class="text-xs text-gray-500">
-                Step 1 of ${steps.length}
+               class="text-xs text-gray-500">
+              Step 1 of ${steps.length}
             </p>
 
             <!-- Controls -->
             <div class="flex flex-wrap gap-3">
-                <button id="bodyScanNext"
-                        class="px-4 py-2 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition">
+              <button id="bodyScanNext"
+                      class="px-4 py-2 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition">
                 Next
-                </button>
+              </button>
 
-                <button id="bodyScanBack"
-                        class="px-4 py-2 border border-purple-300 text-purple-600 rounded-xl hover:bg-purple-50 transition">
+              <button id="bodyScanBack"
+                      class="px-4 py-2 border border-purple-300 text-purple-600 rounded-xl hover:bg-purple-50 transition">
                 Back
-                </button>
+              </button>
 
-                <button id="bodyScanRepeat"
-                        class="px-4 py-2 border border-purple-300 text-purple-600 rounded-xl hover:bg-purple-50 transition">
+              <button id="bodyScanRepeat"
+                      class="px-4 py-2 border border-purple-300 text-purple-600 rounded-xl hover:bg-purple-50 transition">
                 Repeat
-                </button>
+              </button>
             </div>
 
             <!-- Mode Selection -->
             <div class="pt-4 border-t space-y-3">
 
-                <p class="text-xs text-gray-500">Choose a mode:</p>
+              <p class="text-xs text-gray-500">Choose a mode:</p>
 
-                <div class="flex flex-wrap gap-3">
+              <div class="flex flex-wrap gap-3">
 
                 <button id="modeRegular"
                         class="px-3 py-1.5 text-xs bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition">
-                    Regular (10m)
+                  Regular (10m)
                 </button>
 
                 <button id="modeShort"
                         class="px-3 py-1.5 text-xs bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition">
-                    Short (5m)
+                  Short (5m)
                 </button>
 
                 <button id="modeSlow"
                         class="px-3 py-1.5 text-xs bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition">
-                    Slow (16m)
+                  Slow (16m)
                 </button>
 
                 <button id="modeExtended"
                         class="px-3 py-1.5 text-xs bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition">
-                    Extended (20m)
+                  Extended (20m)
                 </button>
 
-                </div>
+              </div>
 
             </div>
 
-            </div>
+          </div>
         `;
 
         // ELEMENTS
@@ -624,36 +607,37 @@
         let autoTimer = null;
 
         function updateUI() {
-            textEl.style.opacity = 0;
-            setTimeout(() => {
+          textEl.style.opacity = 0;
+
+          setTimeout(() => {
             textEl.textContent = steps[idx];
             textEl.style.opacity = 1;
-            }, 200);
+          }, 200);
 
-            progressEl.style.width = `${((idx+1)/steps.length)*100}%`;
-            labelEl.textContent = `Step ${idx+1} of ${steps.length}`;
+          progressEl.style.width = `${((idx + 1) / steps.length) * 100}%`;
+          labelEl.textContent = `Step ${idx + 1} of ${steps.length}`;
 
-            dotEl.classList.add("scale-125");
-            setTimeout(() => dotEl.classList.remove("scale-125"), 200);
+          dotEl.classList.add("scale-125");
+          setTimeout(() => dotEl.classList.remove("scale-125"), 200);
 
-            // Auto advance
-            clearTimeout(autoTimer);
-            autoTimer = setTimeout(() => {
+          // Auto advance
+          clearTimeout(autoTimer);
+          autoTimer = setTimeout(() => {
             if (idx < steps.length - 1) {
-                idx++;
-                updateUI();
+              idx++;
+              updateUI();
             }
-            }, getStepDuration());
+          }, getStepDuration());
         }
 
         function setMode(mode) {
-            currentMode = mode;
-            steps = [...mode.steps];
-            idx = 0;
+          currentMode = mode;
+          steps = [...mode.steps];
+          idx = 0;
 
-            modeLabel.textContent = `Mode: ${mode.label} (${mode.duration / 60} min)`;
+          modeLabel.textContent = `Mode: ${mode.label} (${mode.duration / 60} min)`;
 
-            updateUI();
+          updateUI();
         }
 
         // MODE BUTTONS
@@ -664,17 +648,17 @@
 
         // CONTROLS
         nextBtn.onclick = () => {
-            if (idx < steps.length - 1) {
+          if (idx < steps.length - 1) {
             idx++;
             updateUI();
-            }
+          }
         };
 
         backBtn.onclick = () => {
-            if (idx > 0) {
+          if (idx > 0) {
             idx--;
             updateUI();
-            }
+          }
         };
 
         repeatBtn.onclick = () => updateUI();
@@ -682,9 +666,8 @@
         // Start auto pacing
         updateUI();
 
-
       } else if (type === "grounding") {
-        title.textContent = "5‑4‑3‑2‑1 Grounding";
+        title.textContent = "5-4-3-2-1 Grounding";
         subtitle.textContent = "Use your senses to anchor in the present moment.";
         hint.textContent = "You can do this anywhere, silently, without anyone noticing.";
 
@@ -721,8 +704,10 @@
         const nextBtn = document.getElementById("groundingNext");
 
         let idx = 0;
+
         nextBtn.addEventListener("click", () => {
           idx++;
+
           if (idx >= steps.length) {
             textEl.textContent = "Grounding complete. Notice how your body and mind feel right now.";
             progressEl.style.width = "100%";
@@ -732,13 +717,14 @@
             nextBtn.textContent = "Completed";
             return;
           }
+
           textEl.textContent = steps[idx];
-          progressEl.style.width = `${((idx+1)/steps.length)*100}%`;
-          labelEl.textContent = `Step ${idx+1} of ${steps.length}`;
+          progressEl.style.width = `${((idx + 1) / steps.length) * 100}%`;
+          labelEl.textContent = `Step ${idx + 1} of ${steps.length}`;
         });
 
       } else if (type === "stretching") {
-        title.textContent = "Anti‑Stress Stretching";
+        title.textContent = "Anti-Stress Stretching";
         subtitle.textContent = "Gentle movements to release tension from your body.";
         hint.textContent = "Move within a comfortable range. Never push into pain.";
 
@@ -763,6 +749,7 @@
       }
 
       modal.classList.remove("hidden");
+
       setTimeout(() => {
         modal.classList.add("flex");
         card.classList.remove("scale-95", "opacity-0");
@@ -773,40 +760,42 @@
     function closeExercise() {
       const modal = document.getElementById("exerciseModal");
       const card = document.getElementById("exerciseCard");
+
       clearInterval(breathingInterval);
       breathingInterval = null;
 
       card.classList.remove("opacity-100", "scale-100");
       card.classList.add("opacity-0", "scale-95");
+
       setTimeout(() => {
         modal.classList.remove("flex");
         modal.classList.add("hidden");
       }, 150);
     }
 
-    // Close modal on backdrop click
-    document.getElementById("exerciseModal").addEventListener("click", (e) => {
-      if (e.target.id === "exerciseModal") closeExercise();
-    });
+    // -----------------------------
+    // FAVORITOS
+    // -----------------------------
 
     function updateFavoriteButton(activityId) {
       const button = document.getElementById(`favorite-${activityId}`);
       if (!button) return;
 
       if (isFavorite(user.id, activityId)) {
-        button.textContent = "♥ Favorite";
+        button.textContent = "♥ Favorito";
         button.classList.remove("bg-gray-100", "text-gray-600");
         button.classList.add("bg-purple-100", "text-purple-700");
       } else {
-        button.textContent = "♡ Favorite";
+        button.textContent = "♡ Favorito";
         button.classList.remove("bg-purple-100", "text-purple-700");
         button.classList.add("bg-gray-100", "text-gray-600");
       }
     }
 
     function renderFavoriteButtons() {
-      ["diaphragmatic", "bodyscan", "grounding", "stretching"]
-        .forEach(updateFavoriteButton);
+      ["diaphragmatic", "bodyscan", "grounding", "stretching"].forEach((activityId) => {
+        updateFavoriteButton(activityId);
+      });
     }
 
     function toggleActivityFavorite(activityId) {
@@ -814,75 +803,36 @@
       updateFavoriteButton(activityId);
     }
 
-      renderFavoriteButtons();
+    // -----------------------------
+    // GAMIFICAÇÃO DAS ATIVIDADES
+    // -----------------------------
 
-    function updateGamificationUI() {
-        const pointsEl = document.getElementById("gamificationPoints");
+    function completeActivity() {
+      if (!currentActivityId) return;
 
-        if (!pointsEl) return;
+      addActivityPoints(user.id, 10);
 
-        const gamification = JSON.parse(localStorage.getItem(`gamification_${user.id}`)) || {
-          points: 0
-        };
+      alert("Atividade concluída! Ganhaste 10 pontos.");
 
-        pointsEl.textContent = gamification.points;
-      }
+      closeExercise();
+    }
 
- function completeActivity() {
-  if (!currentActivityId) return;
+    // -----------------------------
+    // FUNÇÕES GLOBAIS PARA O HTML
+    // -----------------------------
 
-  // prevent double rewards
-  if (completedActivities.has(currentActivityId)) {
-    alert("You already completed this activity.");
-    return;
-  }
+    window.openExercise = openExercise;
+    window.closeExercise = closeExercise;
+    window.toggleActivityFavorite = toggleActivityFavorite;
+    window.completeActivity = completeActivity;
 
-    completedActivities.add(currentActivityId);
+    renderFavoriteButtons();
 
-    addActivityPoints(user.id, 10);
-
-    showToast("Activity completed! You earned 10 points ✨", "success", 3000);
-
-    updateGamificationUI?.(); 
-    closeExercise();
-  }
-      // expor funções globais para HTML
-      window.openExercise = openExercise;
-      window.closeExercise = closeExercise;
-      window.toggleActivityFavorite = toggleActivityFavorite;
-      window.completeActivity = completeActivity;
-      window.updateGamificationUI = updateGamificationUI;
-    
+    // Close modal on backdrop click
+    document.getElementById("exerciseModal").addEventListener("click", (e) => {
+      if (e.target.id === "exerciseModal") closeExercise();
+    });
   </script>
-
-  <style>
-    .toast {
-      @apply bg-white shadow-lg rounded-xl px-4 py-3 text-sm border border-gray-200
-            flex items-center gap-2 transition-all duration-300;
-    }
-
-    .toast-success {
-      @apply border-green-200 text-green-700;
-    }
-
-    .toast-error {
-      @apply border-red-200 text-red-700;
-    }
-
-    .toast-progress {
-      height: 3px;
-      background: currentColor;
-      opacity: 0.2;
-      margin-top: 6px;
-      animation: toastProgress linear forwards;
-    }
-
-    @keyframes toastProgress {
-      from { width: 100%; }
-      to { width: 0%; }
-    }
-
-  </style>
 
 </body>
 </html>
