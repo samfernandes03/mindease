@@ -15,6 +15,10 @@ function readDb() {
   return JSON.parse(data);
 }
 
+function writeDb(db) {
+  fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+}
+
 function requireAdmin(req, res, next) {
   const db = readDb();
   const user = db.users.find((item) => item.id === req.user.id);
@@ -44,6 +48,48 @@ router.get("/overview", authMiddleware, requireAdmin, (req, res) => {
   res.json({
     users,
     tasks
+  });
+});
+
+router.put("/users/:id/role", authMiddleware, requireAdmin, (req, res) => {
+  const { id } = req.params;
+  const { role } = req.body;
+
+  if (!["user", "admin"].includes(role)) {
+    return res.status(400).json({
+      message: "Role inválida. Usa apenas 'user' ou 'admin'."
+    });
+  }
+
+  const db = readDb();
+
+  const targetUser = db.users.find((user) => user.id === id);
+
+  if (!targetUser) {
+    return res.status(404).json({
+      message: "Utilizador não encontrado."
+    });
+  }
+
+  if (targetUser.id === req.user.id && role !== "admin") {
+    return res.status(400).json({
+      message: "Não podes remover o teu próprio acesso de administrador."
+    });
+  }
+
+  targetUser.role = role;
+
+  writeDb(db);
+
+  res.json({
+    message: "Role atualizada com sucesso.",
+    user: {
+      id: targetUser.id,
+      name: targetUser.name,
+      email: targetUser.email,
+      role: targetUser.role,
+      createdAt: targetUser.createdAt || null
+    }
   });
 });
 

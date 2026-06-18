@@ -28,6 +28,7 @@ router.post("/register", async (req, res) => {
     name,
     email,
     password: hashed,
+    role: "user",
     photo: null,
     preferences: {
       notifications: true,
@@ -71,6 +72,7 @@ router.post("/login", async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role || "user",
       photo: user.photo,
       preferences: user.preferences
     }
@@ -88,6 +90,7 @@ router.get("/me", authMiddleware, (req, res) => {
     id: user.id,
     name: user.name,
     email: user.email,
+    role: user.role || "user",
     photo: user.photo,
     preferences: user.preferences
   });
@@ -112,6 +115,7 @@ router.put("/update", authMiddleware, (req, res) => {
     id: user.id,
     name: user.name,
     email: user.email,
+    role: user.role || "user",
     photo: user.photo
   });
 });
